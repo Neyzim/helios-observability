@@ -13,16 +13,14 @@ public class MonitoredService {
     private Long id;
     private String name;
     private String monitoredEndpoint;
-    private StatusEnum status;
+    private StatusEnum status = StatusEnum.UP;
     private SLAServiceEnum sla;
 
 
-    public static MonitoredService createNew(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla) {
+    public static MonitoredService createNew(String name, String monitoredEndpoint, SLAServiceEnum sla) {
         MonitoredService service = new MonitoredService();
-        service.id = id;
         service.name = name;
         service.monitoredEndpoint = monitoredEndpoint;
-        service.status = StatusEnum.UP;
         service.sla = sla;
         return service;
     }
@@ -36,6 +34,7 @@ public class MonitoredService {
         service.sla = sla;
         return service;
     }
+
 
 
     public void changeStatusToDown(){
@@ -52,4 +51,23 @@ public class MonitoredService {
         this.status = StatusEnum.UP;
     }
 
+    public Long Id() {
+        return id;
+    }
+
+    public String Name() {
+        return name;
+    }
+
+    public String MonitoredEndpoint() {
+        return monitoredEndpoint;
+    }
+
+    public StatusEnum Status() {
+        return status;
+    }
+
+    public SLAServiceEnum Sla() {
+        return sla;
+    }
 }
