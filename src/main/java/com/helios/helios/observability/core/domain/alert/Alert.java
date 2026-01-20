@@ -19,18 +19,15 @@ public class Alert {
      */
     private Long id;
     private MonitoredService service;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();;
     private LocalDateTime solvedAt;
     private AlertType type;
 
-    public Alert (Long id, MonitoredService service, LocalDateTime createdAt, LocalDateTime solvedAt, AlertType type) {
+    public Alert (MonitoredService service, AlertType type) {
         if (service == null){
             throw new IllegalArgumentException("Alert must have a Service");
         }
-        this.id = id;
         this.service = service;
-        this.createdAt = LocalDateTime.now();
-        this.solvedAt = null;
         this.type = type;
     }
 
@@ -40,5 +37,25 @@ public class Alert {
         }
         this.solvedAt = LocalDateTime.now();
     }
+
+    public Long id() {
+        return id;
     }
+
+    public MonitoredService Service() {
+        return service;
+    }
+
+    public LocalDateTime CreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime SolvedAt() {
+        return solvedAt;
+    }
+
+    public AlertType Type() {
+        return type;
+    }
+}
 

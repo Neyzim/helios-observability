@@ -29,7 +29,7 @@ public class Incident {
     private LocalDateTime finishedAt;
     private IncidentSeverity severity;
 
-    public Incident(Long id,
+    public Incident(
                     MonitoredService service,
                     List<Alert> alerts,
                     IncidentSeverity severity
@@ -37,9 +37,8 @@ public class Incident {
         if (service == null){
             throw new IllegalArgumentException("Incident must have a Service");
         }
-        this.id = id;
         this.service = service;
-        if (alerts.isEmpty()){
+        if (alerts == null || alerts.isEmpty()){
             throw new IllegalArgumentException("An incident must have at least one Alert");
         }
         this.alerts = alerts;
