@@ -14,4 +14,6 @@ public interface AlertRepository {
     List<Alert> findUnsolvedAlerts();
 
     List<Alert> findAlertsByIncidentId(Long id);
+
+    Optional<Alert> findByServiceId(Long id);
 }
