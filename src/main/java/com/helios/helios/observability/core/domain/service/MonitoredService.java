@@ -39,28 +39,39 @@ public class MonitoredService {
 
 
 
-    public void changeStatusToDown() {
+    public ServiceStateChange changeStatusToDown() {
         if (lastEvent == StatusEnum.DOWN) {
             cont = cont + 1;
-        }if (lastEvent != StatusEnum.DOWN){
+        }else{
             cont = 1;
         }
         lastEvent = StatusEnum.DOWN;
-        if (cont == 5) {
-            this.status = StatusEnum.DOWN;
+        if (cont < 5) {
+            return ServiceStateChange.NO_CHANGE;
         }
+        if(this.status == StatusEnum.DOWN){
+            return ServiceStateChange.NO_CHANGE;
+        }
+        this.status = StatusEnum.DOWN;
+        return ServiceStateChange.DOWN_CONFIRMED;
     }
 
-    public void changeStatusToUp(){
+    public ServiceStateChange changeStatusToUp(){
+
         if (lastEvent == StatusEnum.UP) {
             cont = cont + 1;
-        }if (lastEvent != StatusEnum.UP){
+        }else{
             cont = 1;
         }
         lastEvent = StatusEnum.UP;
-        if (cont == 5) {
-            this.status = StatusEnum.UP;
+        if (cont < 5) {
+            return ServiceStateChange.NO_CHANGE;
         }
+        if(this.status == StatusEnum.UP){
+            return ServiceStateChange.NO_CHANGE;
+        }
+        this.status = StatusEnum.UP;
+        return ServiceStateChange.UP_CONFIRMED;
     }
 
     public Long Id() {
