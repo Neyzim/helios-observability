@@ -15,6 +15,8 @@ public class MonitoredService {
     private String monitoredEndpoint;
     private StatusEnum status = StatusEnum.UP;
     private SLAServiceEnum sla;
+    private Integer cont = 0;
+    private StatusEnum lastEvent;
 
 
     public static MonitoredService createNew(String name, String monitoredEndpoint, SLAServiceEnum sla) {
@@ -37,18 +39,28 @@ public class MonitoredService {
 
 
 
-    public void changeStatusToDown(){
-        if (this.status == StatusEnum.DOWN){
-            throw new ServiceAlreadyDown("Impossible to change Status! Service Already Down.");
+    public void changeStatusToDown() {
+        if (lastEvent == StatusEnum.DOWN) {
+            cont = cont + 1;
+        }if (lastEvent != StatusEnum.DOWN){
+            cont = 1;
         }
-        this.status = StatusEnum.DOWN;
+        lastEvent = StatusEnum.DOWN;
+        if (cont == 5) {
+            this.status = StatusEnum.DOWN;
+        }
     }
 
     public void changeStatusToUp(){
-        if (this.status == StatusEnum.UP){
-            throw new ServiceAlreadyUp("Impossible to change Status! Service already UP.");
+        if (lastEvent == StatusEnum.UP) {
+            cont = cont + 1;
+        }if (lastEvent != StatusEnum.UP){
+            cont = 1;
         }
-        this.status = StatusEnum.UP;
+        lastEvent = StatusEnum.UP;
+        if (cont == 5) {
+            this.status = StatusEnum.UP;
+        }
     }
 
     public Long Id() {
