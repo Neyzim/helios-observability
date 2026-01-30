@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MonitoredServiceRepository {
 
-    MonitoredService save(MonitoredService service);
+    void save(MonitoredService service);
 
     Optional<MonitoredService> findServiceById(Long Id);
 
