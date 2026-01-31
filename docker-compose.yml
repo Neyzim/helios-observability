@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: helios-observability
+    environment:
+      - POSTGRES_USER=helios_admin
+      - POSTGRES_PASSWORD=1234567890
+      - POSTGRES_DB=helios
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql
