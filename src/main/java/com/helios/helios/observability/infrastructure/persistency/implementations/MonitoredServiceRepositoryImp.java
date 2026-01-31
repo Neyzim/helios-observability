@@ -4,11 +4,16 @@ import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.StatusEnum;
 import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
 import com.helios.helios.observability.infrastructure.mapper.EntitiesMapper;
+import com.helios.helios.observability.infrastructure.persistency.entities.MonitoredServiceEntity;
 import com.helios.helios.observability.infrastructure.persistency.repositories.JpaMonitoredServiceRepository;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class MonitoredServiceRepositoryImp implements MonitoredServiceRepository {
 
     private final JpaMonitoredServiceRepository monitoredServiceRepository;
@@ -21,13 +26,13 @@ public class MonitoredServiceRepositoryImp implements MonitoredServiceRepository
 
     @Override
     public void save(MonitoredService service) {
-        monitoredServiceRepository.save(service);
+        MonitoredServiceEntity coreService = mapper.toInfraEntity(service);
+        monitoredServiceRepository.save(coreService);
     }
 
     @Override
     public Optional<MonitoredService> findServiceById(Long Id) {
-        Optional<MonitoredService> service =  monitoredServiceRepository.findById(Id);
-        return service;
+        return monitoredServiceRepository.findById(Id).map(mapper::toCoreEntity);
     }
 
     @Override

@@ -12,16 +12,16 @@ public class MonitoredServiceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String serviceName;
     private String monitoredEndpoint;
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
     @Enumerated(EnumType.STRING)
     private SLAServiceEnum sla;
 
-    public MonitoredServiceEntity(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla) {
+    public MonitoredServiceEntity(Long id, String serviceName, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla) {
         this.id = id;
-        this.name = name;
+        this.serviceName = serviceName;
         this.monitoredEndpoint = monitoredEndpoint;
         this.status = status;
         this.sla = sla;
@@ -38,12 +38,12 @@ public class MonitoredServiceEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public String getMonitoredEndpoint() {
