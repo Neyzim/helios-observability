@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public  interface JpaMonitoredServiceRepository extends JpaRepository<MonitoredServiceEntity, Long> {
 
-    MonitoredService findAllServicesByStatus(StatusEnum status);
+    List<MonitoredServiceEntity> findAllServicesByStatus(StatusEnum status);
 
-    MonitoredService findByServiceName(String name);
+    MonitoredServiceEntity findByServiceName(String name);
 }

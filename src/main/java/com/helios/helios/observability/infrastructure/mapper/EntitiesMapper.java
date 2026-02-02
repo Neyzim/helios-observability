@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 public class EntitiesMapper {
 
     public MonitoredService toCoreEntity(MonitoredServiceEntity infraEntity){
-        return MonitoredService.createNew(
+        return MonitoredService.rehydrate(
+                infraEntity.getId(),
                 infraEntity.getServiceName(),
                 infraEntity.getMonitoredEndpoint(),
+                infraEntity.getStatus(),
                 infraEntity.getSla()
         );
     }
