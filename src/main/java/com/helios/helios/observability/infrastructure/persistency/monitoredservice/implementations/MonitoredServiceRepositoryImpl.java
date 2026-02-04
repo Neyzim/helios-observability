@@ -1,11 +1,11 @@
-package com.helios.helios.observability.infrastructure.persistency.implementations;
+package com.helios.helios.observability.infrastructure.persistency.monitoredservice.implementations;
 
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.StatusEnum;
 import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
 import com.helios.helios.observability.infrastructure.mapper.EntitiesMapper;
-import com.helios.helios.observability.infrastructure.persistency.entities.MonitoredServiceEntity;
-import com.helios.helios.observability.infrastructure.persistency.repositories.JpaMonitoredServiceRepository;
+import com.helios.helios.observability.infrastructure.persistency.monitoredservice.entities.MonitoredServiceEntity;
+import com.helios.helios.observability.infrastructure.persistency.monitoredservice.repositories.JpaMonitoredServiceRepository;
 import org.springframework.stereotype.Repository;
 
 

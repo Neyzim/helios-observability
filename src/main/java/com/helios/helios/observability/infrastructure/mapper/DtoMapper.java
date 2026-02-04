@@ -2,7 +2,6 @@ package com.helios.helios.observability.infrastructure.mapper;
 
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.infrastructure.dto.ResponseMonitoredSeviceDto;
-import com.helios.helios.observability.infrastructure.persistency.entities.MonitoredServiceEntity;
 import org.springframework.stereotype.Component;
 
 @Component

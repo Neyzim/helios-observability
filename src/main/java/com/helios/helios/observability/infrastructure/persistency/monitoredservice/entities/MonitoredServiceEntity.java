@@ -1,4 +1,4 @@
-package com.helios.helios.observability.infrastructure.persistency.entities;
+package com.helios.helios.observability.infrastructure.persistency.monitoredservice.entities;
 
 import com.helios.helios.observability.core.domain.service.SLAServiceEnum;
 import com.helios.helios.observability.core.domain.service.StatusEnum;
