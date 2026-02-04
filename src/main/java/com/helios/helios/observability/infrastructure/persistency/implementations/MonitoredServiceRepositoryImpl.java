@@ -51,6 +51,12 @@ public class MonitoredServiceRepositoryImpl implements MonitoredServiceRepositor
 
     public List<MonitoredService> listAllServices(){
         List<MonitoredServiceEntity> services = monitoredServiceRepository.findAll();
-        return services.stream().map(mapper::toCoreEntity).toList();
+        return services.stream()
+                .map(mapper::toCoreEntity)
+                .toList();
+    }
+
+    public void deleteServiceById(Long id){
+        monitoredServiceRepository.deleteById(id);
     }
 }

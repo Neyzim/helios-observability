@@ -49,4 +49,10 @@ public class MonitoredServiceController {
         return ResponseEntity.ok(services);
     }
 
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        monitoredServiceRepository.deleteServiceById(id);
+        return ResponseEntity.ok().body("Service Deleted: " + id);
+    }
+
 }
