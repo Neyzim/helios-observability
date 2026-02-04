@@ -10,7 +10,7 @@ public class DtoMapper {
 
     public ResponseMonitoredSeviceDto toDto(MonitoredService service){
         return new ResponseMonitoredSeviceDto(
-                service.Name(), service.MonitoredEndpoint(), service.Sla()
+                service.Id(), service.Name(), service.MonitoredEndpoint(), service.Sla()
         );
     }
 }
