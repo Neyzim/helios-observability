@@ -2,8 +2,10 @@ package com.helios.helios.observability.infrastructure.mapper.incident;
 
 import com.helios.helios.observability.core.domain.incident.Incident;
 import com.helios.helios.observability.infrastructure.dto.incident.IncidentResponseDto;
+import org.springframework.stereotype.Component;
 
-public class DtoMapper {
+@Component
+public class IncidentDtoMapper {
 
 
     public IncidentResponseDto toDto(Incident incident){

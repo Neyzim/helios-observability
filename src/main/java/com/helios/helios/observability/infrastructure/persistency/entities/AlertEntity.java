@@ -13,15 +13,19 @@ public class AlertEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private MonitoredService service;
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private MonitoredServiceEntity service;
     private LocalDateTime createdAt;
     private LocalDateTime solvedAt;
     private AlertType type;
+    @ManyToOne
+    private IncidentEntity incident;
 
     public AlertEntity() {
     }
 
-    public AlertEntity(Long id, MonitoredService service, LocalDateTime createdAt, LocalDateTime solvedAt, AlertType type) {
+    public AlertEntity(Long id, MonitoredServiceEntity service, LocalDateTime createdAt, LocalDateTime solvedAt, AlertType type) {
         this.id = id;
         this.service = service;
         this.createdAt = createdAt;
@@ -37,11 +41,11 @@ public class AlertEntity {
         this.id = id;
     }
 
-    public MonitoredService getService() {
+    public MonitoredServiceEntity getService() {
         return service;
     }
 
-    public void setService(MonitoredService service) {
+    public void setService(MonitoredServiceEntity service) {
         this.service = service;
     }
 
@@ -67,5 +71,13 @@ public class AlertEntity {
 
     public void setType(AlertType type) {
         this.type = type;
+    }
+
+    public IncidentEntity getIncident() {
+        return incident;
+    }
+
+    public void setIncident(IncidentEntity incident) {
+        this.incident = incident;
     }
 }

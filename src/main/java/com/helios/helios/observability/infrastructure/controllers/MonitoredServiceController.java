@@ -4,7 +4,7 @@ import com.helios.helios.observability.application.service.usecases.monitoredser
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.infrastructure.dto.monitoredservice.CreateMonitoredServiceRequest;
 import com.helios.helios.observability.infrastructure.dto.monitoredservice.ResponseMonitoredSeviceDto;
-import com.helios.helios.observability.infrastructure.mapper.MonitoredService.DtoMapper;
+import com.helios.helios.observability.infrastructure.mapper.MonitoredService.MonitoredServiceDtoMapper;
 import com.helios.helios.observability.infrastructure.persistency.implementations.MonitoredServiceRepositoryImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,12 @@ public class MonitoredServiceController {
 
     private final MonitoredServiceRepositoryImpl monitoredServiceRepository;
     private final RegisterMonitoredService registerMonitoredService;
-    private final DtoMapper dtoMapper;
+    private final MonitoredServiceDtoMapper monitoredServiceDtoMapper;
 
-    public MonitoredServiceController(MonitoredServiceRepositoryImpl monitoredServiceRepository, RegisterMonitoredService registerMonitoredService, DtoMapper dtoMapper) {
+    public MonitoredServiceController(MonitoredServiceRepositoryImpl monitoredServiceRepository, RegisterMonitoredService registerMonitoredService, MonitoredServiceDtoMapper monitoredServiceDtoMapper) {
         this.monitoredServiceRepository = monitoredServiceRepository;
         this.registerMonitoredService = registerMonitoredService;
-        this.dtoMapper = dtoMapper;
+        this.monitoredServiceDtoMapper = monitoredServiceDtoMapper;
     }
 
     @PostMapping(value = "/save")
@@ -35,7 +35,7 @@ public class MonitoredServiceController {
     @GetMapping(value = "/{serviceName}")
     public ResponseEntity<ResponseMonitoredSeviceDto> getServiceInfo(@PathVariable String serviceName){
         ResponseMonitoredSeviceDto service =  monitoredServiceRepository.findServiceByName(serviceName)
-                .map(dtoMapper::toDto).orElseThrow();
+                .map(monitoredServiceDtoMapper::toDto).orElseThrow();
         return ResponseEntity.ok().body(service);
     }
 
@@ -43,7 +43,7 @@ public class MonitoredServiceController {
     public ResponseEntity<List<ResponseMonitoredSeviceDto>> listAllServices(){
         List<ResponseMonitoredSeviceDto> services = monitoredServiceRepository.listAllServices()
                 .stream()
-                .map(dtoMapper::toDto)
+                .map(monitoredServiceDtoMapper::toDto)
                 .toList();
         return ResponseEntity.ok(services);
     }

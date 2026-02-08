@@ -5,7 +5,7 @@ import com.helios.helios.observability.infrastructure.dto.monitoredservice.Respo
 import org.springframework.stereotype.Component;
 
 @Component
-public class DtoMapper {
+public class MonitoredServiceDtoMapper {
 
     public ResponseMonitoredSeviceDto toDto(MonitoredService service){
         return new ResponseMonitoredSeviceDto(

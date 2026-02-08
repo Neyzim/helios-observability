@@ -4,6 +4,8 @@ import com.helios.helios.observability.core.domain.service.SLAServiceEnum;
 import com.helios.helios.observability.core.domain.service.StatusEnum;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "monitored_service")
 public class MonitoredServiceEntity {
@@ -11,13 +13,18 @@ public class MonitoredServiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @OneToMany(mappedBy = "service")
+    private List<AlertEntity> alerts;
     private String serviceName;
     private String monitoredEndpoint;
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
     @Enumerated(EnumType.STRING)
     private SLAServiceEnum sla;
+    @ManyToOne
+    @JoinColumn(name = "incident_id")
+    private IncidentEntity incident;
+
 
     public MonitoredServiceEntity(Long id, String serviceName, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla) {
         this.id = id;

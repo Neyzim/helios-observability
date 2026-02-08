@@ -15,13 +15,16 @@ public class IncidentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private MonitoredService service;
-    private List<Alert> alerts;
+    @OneToOne
+    @JoinColumn(name = "service_id")
+    private MonitoredServiceEntity service;
+    @OneToMany
+    private List<AlertEntity> alerts;
     private LocalDateTime startedAt;
     private LocalDateTime finishedAt;
     private IncidentSeverity severity;
 
-    public IncidentEntity(Long id, MonitoredService service, List<Alert> alerts, LocalDateTime startedAt, LocalDateTime finishedAt, IncidentSeverity severity) {
+    public IncidentEntity(Long id, MonitoredServiceEntity service, List<AlertEntity> alerts, LocalDateTime startedAt, LocalDateTime finishedAt, IncidentSeverity severity) {
         this.id = id;
         this.service = service;
         this.alerts = alerts;
@@ -41,19 +44,19 @@ public class IncidentEntity {
         this.id = id;
     }
 
-    public MonitoredService getService() {
+    public MonitoredServiceEntity getService() {
         return service;
     }
 
-    public void setService(MonitoredService service) {
+    public void setService(MonitoredServiceEntity service) {
         this.service = service;
     }
 
-    public List<Alert> getAlerts() {
+    public List<AlertEntity> getAlerts() {
         return alerts;
     }
 
-    public void setAlerts(List<Alert> alerts) {
+    public void setAlerts(List<AlertEntity> alerts) {
         this.alerts = alerts;
     }
 
