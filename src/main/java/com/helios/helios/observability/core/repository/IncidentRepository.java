@@ -15,7 +15,4 @@ public interface IncidentRepository {
 
     List<Incident> findOpenIncidents();
 
-    void close(Incident incident);
-
-
 }

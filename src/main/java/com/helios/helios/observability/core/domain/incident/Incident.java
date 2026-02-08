@@ -29,23 +29,38 @@ public class Incident {
     private LocalDateTime finishedAt;
     private IncidentSeverity severity;
 
-    public Incident(
+    public static Incident createNew(
                     MonitoredService service,
                     List<Alert> alerts,
                     IncidentSeverity severity
     ) {
+        Incident incident = new Incident();
         if (service == null){
             throw new IllegalArgumentException("Incident must have a Service");
         }
-        this.service = service;
+        incident.service = service;
         if (alerts == null || alerts.isEmpty()){
             throw new IllegalArgumentException("An incident must have at least one Alert");
         }
-        this.alerts = alerts;
+        incident.alerts = alerts;
         if (severity == null){
             throw new IllegalArgumentException("Incident must have a Severity");
         }
-        this.severity = severity;
+        incident.severity = severity;
+
+        return incident;
+    }
+
+    public static Incident rehydrate(LocalDateTime startedAt, Long id, MonitoredService service, List<Alert> alerts, LocalDateTime finishedAt, IncidentSeverity severity) {
+        Incident incident = new Incident();
+        incident.startedAt = startedAt;
+        incident.id = id;
+        incident.service = service;
+        incident.alerts = alerts;
+        incident.finishedAt = finishedAt;
+        incident.severity = severity;
+
+        return incident;
     }
 
     public void vinculateAlert(Alert alert){
@@ -60,5 +75,29 @@ public class Incident {
             throw new IncidentAlreadySolved("Incident already solved");
         }
         this.finishedAt = LocalDateTime.now();
+    }
+
+    public Long id() {
+        return id;
+    }
+
+    public MonitoredService service() {
+        return service;
+    }
+
+    public List<Alert> alerts() {
+        return alerts;
+    }
+
+    public LocalDateTime startedAt() {
+        return startedAt;
+    }
+
+    public LocalDateTime finishedAt() {
+        return finishedAt;
+    }
+
+    public IncidentSeverity severity() {
+        return severity;
     }
 }

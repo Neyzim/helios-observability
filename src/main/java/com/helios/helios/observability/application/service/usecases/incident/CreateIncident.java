@@ -17,7 +17,7 @@ public class CreateIncident {
     }
 
     public Incident createIncident(MonitoredService service, Alert alert, IncidentSeverity severity){
-        Incident incident = new Incident(service, List.of(alert), severity);
+        Incident incident = Incident.createNew(service, List.of(alert), severity);
         incidentRepository.save(incident);
         return incident;
     }
