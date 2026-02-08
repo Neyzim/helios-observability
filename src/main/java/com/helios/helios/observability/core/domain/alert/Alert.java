@@ -23,12 +23,24 @@ public class Alert {
     private LocalDateTime solvedAt;
     private AlertType type;
 
-    public Alert (MonitoredService service, AlertType type) {
+    public static Alert createNew (MonitoredService service, AlertType type) {
+        Alert alert = new Alert();
         if (service == null){
             throw new IllegalArgumentException("Alert must have a Service");
         }
-        this.service = service;
-        this.type = type;
+        alert.service = service;
+        alert.type = type;
+        return alert;
+    }
+
+    public static Alert rehydrate(Long id, MonitoredService service, LocalDateTime createdAt, LocalDateTime solvedAt, AlertType type) {
+        Alert alert = new Alert();
+        alert.id = id;
+        alert.service = service;
+        alert.createdAt = createdAt;
+        alert.solvedAt = solvedAt;
+        alert.type = type;
+        return alert;
     }
 
     public void resolve(){

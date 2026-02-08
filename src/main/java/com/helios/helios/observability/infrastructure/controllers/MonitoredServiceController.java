@@ -2,10 +2,10 @@ package com.helios.helios.observability.infrastructure.controllers;
 
 import com.helios.helios.observability.application.service.usecases.monitoredservice.RegisterMonitoredService;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
-import com.helios.helios.observability.infrastructure.dto.CreateMonitoredServiceRequest;
-import com.helios.helios.observability.infrastructure.dto.ResponseMonitoredSeviceDto;
-import com.helios.helios.observability.infrastructure.mapper.DtoMapper;
-import com.helios.helios.observability.infrastructure.persistency.monitoredservice.implementations.MonitoredServiceRepositoryImpl;
+import com.helios.helios.observability.infrastructure.dto.monitoredservice.CreateMonitoredServiceRequest;
+import com.helios.helios.observability.infrastructure.dto.monitoredservice.ResponseMonitoredSeviceDto;
+import com.helios.helios.observability.infrastructure.mapper.MonitoredService.DtoMapper;
+import com.helios.helios.observability.infrastructure.persistency.implementations.MonitoredServiceRepositoryImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

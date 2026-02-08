@@ -1,4 +1,4 @@
-package com.helios.helios.observability.infrastructure.dto;
+package com.helios.helios.observability.infrastructure.dto.monitoredservice;
 
 import com.helios.helios.observability.core.domain.service.SLAServiceEnum;
 

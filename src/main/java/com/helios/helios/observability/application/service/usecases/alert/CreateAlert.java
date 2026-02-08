@@ -18,7 +18,7 @@ public class CreateAlert {
 
     public Alert createAlert(MonitoredService service,
                                         AlertType type){
-        Alert alert = new Alert(service, type);
+        Alert alert = Alert.createNew(service, type);
         alertRepository.save(alert);
 
         return alert;

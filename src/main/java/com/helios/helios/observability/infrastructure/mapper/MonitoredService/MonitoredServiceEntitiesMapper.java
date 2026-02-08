@@ -1,11 +1,11 @@
-package com.helios.helios.observability.infrastructure.mapper;
+package com.helios.helios.observability.infrastructure.mapper.MonitoredService;
 
 import com.helios.helios.observability.core.domain.service.MonitoredService;
-import com.helios.helios.observability.infrastructure.persistency.monitoredservice.entities.MonitoredServiceEntity;
+import com.helios.helios.observability.infrastructure.persistency.entities.MonitoredServiceEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EntitiesMapper {
+public class MonitoredServiceEntitiesMapper {
 
     public MonitoredService toCoreEntity(MonitoredServiceEntity infraEntity){
         return MonitoredService.rehydrate(
