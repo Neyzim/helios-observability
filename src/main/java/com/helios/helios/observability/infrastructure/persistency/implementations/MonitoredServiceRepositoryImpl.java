@@ -49,6 +49,7 @@ public class MonitoredServiceRepositoryImpl implements MonitoredServiceRepositor
                                     .map(mapper::toCoreEntity);
     }
 
+    @Override
     public List<MonitoredService> listAllServices(){
         List<MonitoredServiceEntity> services = monitoredServiceRepository.findAll();
         return services.stream()

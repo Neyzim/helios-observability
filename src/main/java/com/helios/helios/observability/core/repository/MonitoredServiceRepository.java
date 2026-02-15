@@ -15,4 +15,6 @@ public interface MonitoredServiceRepository {
     List<MonitoredService> listMonitoredServicesForStatus(StatusEnum status);
 
     Optional<MonitoredService> findServiceByName(String name);
+
+    List<MonitoredService> listAllServices();
 }
