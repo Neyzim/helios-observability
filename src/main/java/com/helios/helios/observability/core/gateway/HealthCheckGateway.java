@@ -4,6 +4,4 @@ public interface HealthCheckGateway {
 
 
     boolean isServiceUp(String url);
-
-    boolean isServiceDown(String url);
 }

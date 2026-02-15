@@ -2,7 +2,9 @@ package com.helios.helios.observability.infrastructure.config;
 
 import com.helios.helios.observability.application.service.usecases.orquestrator.CheckServiceHealth;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HealthCheckScheduler {
 
     private final CheckServiceHealth checkServiceHealth;
