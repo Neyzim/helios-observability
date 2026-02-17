@@ -1,4 +1,4 @@
-package com.helios.helios.observability.infrastructure.config;
+package com.helios.helios.observability.infrastructure.scheduler;
 
 import com.helios.helios.observability.application.service.usecases.orquestrator.CheckServiceHealth;
 import org.springframework.scheduling.annotation.Scheduled;

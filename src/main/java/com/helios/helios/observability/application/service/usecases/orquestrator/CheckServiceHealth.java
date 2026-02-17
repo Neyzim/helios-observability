@@ -11,28 +11,32 @@ public class CheckServiceHealth {
 
     private final MonitoredServiceRepository monitoredServiceRepository;
     private final HealthCheckGateway healthCheckGateway;
+    private final ServiceHealthHandler serviceHealthHandler;
     private final ObservabilityGateway observabilityGateway;
 
-    public CheckServiceHealth(MonitoredServiceRepository monitoredServiceRepository, HealthCheckGateway healthCheckGateway, ObservabilityGateway observabilityGateway) {
+
+    public CheckServiceHealth(MonitoredServiceRepository monitoredServiceRepository, HealthCheckGateway healthCheckGateway, ServiceHealthHandler serviceHealthHandler, ObservabilityGateway observabilityGateway) {
         this.monitoredServiceRepository = monitoredServiceRepository;
         this.healthCheckGateway = healthCheckGateway;
+
+        this.serviceHealthHandler = serviceHealthHandler;
         this.observabilityGateway = observabilityGateway;
     }
 
-    public void execute(){
-       List<MonitoredService> monitoredServices = monitoredServiceRepository.listAllServices();
+    public void execute() {
+        List<MonitoredService> monitoredServices = monitoredServiceRepository.listAllServices();
 
-       for(MonitoredService service : monitoredServices){
-           boolean isUp = healthCheckGateway.isServiceUp(service.MonitoredEndpoint());
-           if(isUp){
-               service.changeStatusToUp();
-               monitoredServiceRepository.save(service);
-               observabilityGateway.recordServiceUp(service.Name());
-           }else {
-               service.changeStatusToDown();
-               monitoredServiceRepository.save(service);
-               observabilityGateway.recordServiceDown(service.Name());
-           }
-           }
+        for (MonitoredService service : monitoredServices) {
+            boolean isUp = healthCheckGateway.isServiceUp(service.MonitoredEndpoint());
+            serviceHealthHandler.handle(service, isUp);
+
+            monitoredServiceRepository.save(service);
+
+            if (isUp) {
+                observabilityGateway.recordServiceUp(service.Name());
+            } else {
+                observabilityGateway.recordServiceDown(service.Name());
+            }
+        }
     }
 }
