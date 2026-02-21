@@ -24,14 +24,19 @@ public class MonitoredServiceEntity {
     @ManyToOne
     @JoinColumn(name = "incident_id")
     private IncidentEntity incident;
+    private Integer cont;
+    @Enumerated(EnumType.STRING)
+    private StatusEnum lastEvent;
 
 
-    public MonitoredServiceEntity(Long id, String serviceName, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla) {
+    public MonitoredServiceEntity(Long id, String serviceName, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla, Integer count, StatusEnum lastEvent) {
         this.id = id;
         this.serviceName = serviceName;
         this.monitoredEndpoint = monitoredEndpoint;
         this.status = status;
         this.sla = sla;
+        this.cont = count;
+        this.lastEvent = lastEvent;
     }
 
     public MonitoredServiceEntity() {
@@ -75,5 +80,37 @@ public class MonitoredServiceEntity {
 
     public void setSla(SLAServiceEnum sla) {
         this.sla = sla;
+    }
+
+    public List<AlertEntity> getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(List<AlertEntity> alerts) {
+        this.alerts = alerts;
+    }
+
+    public IncidentEntity getIncident() {
+        return incident;
+    }
+
+    public void setIncident(IncidentEntity incident) {
+        this.incident = incident;
+    }
+
+    public Integer getCont() {
+        return cont;
+    }
+
+    public void setCont(Integer cont) {
+        this.cont = cont;
+    }
+
+    public StatusEnum getLastEvent() {
+        return lastEvent;
+    }
+
+    public void setLastEvent(StatusEnum lastEvent) {
+        this.lastEvent = lastEvent;
     }
 }

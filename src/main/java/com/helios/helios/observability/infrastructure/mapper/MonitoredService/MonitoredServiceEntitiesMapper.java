@@ -13,7 +13,9 @@ public class MonitoredServiceEntitiesMapper {
                 infraEntity.getServiceName(),
                 infraEntity.getMonitoredEndpoint(),
                 infraEntity.getStatus(),
-                infraEntity.getSla()
+                infraEntity.getSla(),
+                infraEntity.getCont(),
+                infraEntity.getLastEvent()
         );
     }
 
@@ -24,6 +26,8 @@ public class MonitoredServiceEntitiesMapper {
         monitoredServiceEntity.setServiceName(coreService.Name());
         monitoredServiceEntity.setStatus(coreService.Status());
         monitoredServiceEntity.setSla(coreService.Sla());
+        monitoredServiceEntity.setCont(coreService.Cont());
+        monitoredServiceEntity.setLastEvent(coreService.LastEvent());
 
         return monitoredServiceEntity;
     }

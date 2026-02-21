@@ -27,13 +27,15 @@ public class MonitoredService {
         return service;
     }
 
-    public static MonitoredService rehydrate(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla){
+    public static MonitoredService rehydrate(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla, Integer count, StatusEnum lastEvent){
         MonitoredService service = new MonitoredService();
         service.id = id;
         service.name = name;
         service.monitoredEndpoint = monitoredEndpoint;
         service.status = status;
         service.sla = sla;
+        service.cont = count;
+        service.lastEvent = lastEvent;
         return service;
     }
 
@@ -92,5 +94,13 @@ public class MonitoredService {
 
     public SLAServiceEnum Sla() {
         return sla;
+    }
+
+    public Integer Cont() {
+        return cont;
+    }
+
+    public StatusEnum LastEvent() {
+        return lastEvent;
     }
 }

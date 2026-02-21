@@ -18,7 +18,7 @@ public class IncidentEntity {
     @OneToOne
     @JoinColumn(name = "service_id")
     private MonitoredServiceEntity service;
-    @OneToMany
+    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AlertEntity> alerts;
     private LocalDateTime startedAt;
     private LocalDateTime finishedAt;
