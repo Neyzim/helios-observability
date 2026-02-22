@@ -19,7 +19,7 @@ public class Alert {
      */
     private Long id;
     private MonitoredService service;
-    private LocalDateTime createdAt = LocalDateTime.now();;
+    private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime solvedAt;
     private AlertType type;
 

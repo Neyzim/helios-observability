@@ -1,7 +1,11 @@
 package com.helios.helios.observability.core.domain.service;
 
+import com.helios.helios.observability.core.domain.alert.Alert;
+import com.helios.helios.observability.core.domain.incident.Incident;
 import com.helios.helios.observability.core.exception.ServiceAlreadyDown;
 import com.helios.helios.observability.core.exception.ServiceAlreadyUp;
+
+import java.util.List;
 
 public class MonitoredService {
     /*
@@ -17,6 +21,8 @@ public class MonitoredService {
     private SLAServiceEnum sla;
     private Integer cont = 0;
     private StatusEnum lastEvent;
+    private List<Alert> alerts;
+    private Incident incident;
 
 
     public static MonitoredService createNew(String name, String monitoredEndpoint, SLAServiceEnum sla) {
@@ -27,7 +33,7 @@ public class MonitoredService {
         return service;
     }
 
-    public static MonitoredService rehydrate(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla, Integer count, StatusEnum lastEvent){
+    public static MonitoredService rehydrate(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla, Integer count, StatusEnum lastEvent, List<Alert> alerts, Incident incident){
         MonitoredService service = new MonitoredService();
         service.id = id;
         service.name = name;
@@ -36,6 +42,8 @@ public class MonitoredService {
         service.sla = sla;
         service.cont = count;
         service.lastEvent = lastEvent;
+        service.alerts = alerts;
+        service.incident = incident;
         return service;
     }
 
@@ -102,5 +110,14 @@ public class MonitoredService {
 
     public StatusEnum LastEvent() {
         return lastEvent;
+    }
+
+    public List<Alert> Alerts() {
+        return alerts;
+    }
+
+
+    public Incident Incident() {
+        return incident;
     }
 }
