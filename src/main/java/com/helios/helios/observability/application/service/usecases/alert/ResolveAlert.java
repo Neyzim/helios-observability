@@ -14,7 +14,9 @@ public class ResolveAlert {
     }
 
     public void resolve(Long serviceId){
-        Alert alert = alertRepository.findAlertsById(serviceId).orElseThrow();
+        Alert alert = alertRepository.findAlertById(serviceId).orElseThrow(
+                () -> new RuntimeException("Alert Not Found!")
+        );
         alert.resolve();
         alertRepository.save(alert);
     }

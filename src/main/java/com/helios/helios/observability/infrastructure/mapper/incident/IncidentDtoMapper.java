@@ -9,6 +9,9 @@ public class IncidentDtoMapper {
 
 
     public IncidentResponseDto toDto(Incident incident){
+        if(incident == null){
+            return null;
+        }
         return new IncidentResponseDto(
                 incident.id(),
                 incident.service(),

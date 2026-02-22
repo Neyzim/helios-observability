@@ -27,9 +27,9 @@ public class MonitoredServiceController {
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<?> saveService(@RequestBody CreateMonitoredServiceRequest service){
+    public ResponseEntity<ResponseMonitoredSeviceDto> saveService(@RequestBody CreateMonitoredServiceRequest service){
         MonitoredService savedService = registerMonitoredService.registerNewMonitoredService(service.serviceName(), service.monitoredEndpoint(), service.sla());
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
+        return ResponseEntity.status(HttpStatus.CREATED).body(monitoredServiceDtoMapper.toDto(savedService));
     }
 
     @GetMapping(value = "/{serviceName}")

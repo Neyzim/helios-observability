@@ -9,11 +9,11 @@ public interface AlertRepository {
 
     Alert save (Alert alert);
 
-    Optional<Alert> findAlertsById(Long id);
+    Optional<Alert> findAlertById(Long id);
 
     List<Alert> findUnsolvedAlerts();
 
     List<Alert> findAlertsByIncidentId(Long id);
 
-    Optional<Alert> findByServiceId(Long id);
+    List<Alert> findAlertsByServiceId(Long id);
 }

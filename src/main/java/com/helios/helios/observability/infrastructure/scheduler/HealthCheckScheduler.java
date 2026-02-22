@@ -1,6 +1,7 @@
 package com.helios.helios.observability.infrastructure.scheduler;
 
 import com.helios.helios.observability.application.service.usecases.orquestrator.CheckServiceHealth;
+import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class HealthCheckScheduler {
     }
 
     @Scheduled(fixedRate = 30000)
+    @Transactional
     public void run() {
         checkServiceHealth.execute();
     }

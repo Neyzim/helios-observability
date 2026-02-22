@@ -6,7 +6,7 @@ import com.helios.helios.observability.core.domain.service.MonitoredService;
 import java.time.LocalDateTime;
 
 public record AlertResponseDTO(Long id,
-                             MonitoredService service,
+                             String service,
                              LocalDateTime createdAt,
                              LocalDateTime solvedAt,
                              AlertType type
