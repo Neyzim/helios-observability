@@ -41,8 +41,8 @@ public class IncidentRepositoryImpl implements IncidentRepository {
     }
 
     @Override
-    public List<Incident> findOpenIncidents() {
-        //TODO
-        return List.of();
+    public Optional<Incident> findOpenIncidentByServiceId(Long serviceId) {
+        return incidentRepository.findByService_IdAndFinishedAtIsNull(serviceId)
+                .map(mapper::toCoreEntity);
     }
 }

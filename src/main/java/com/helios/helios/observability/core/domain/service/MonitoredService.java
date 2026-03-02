@@ -40,7 +40,7 @@ public class MonitoredService {
         service.monitoredEndpoint = monitoredEndpoint;
         service.status = status;
         service.sla = sla;
-        service.cont = count;
+        service.cont = count != null ? count : 0;
         service.lastEvent = lastEvent;
         service.alerts = alerts;
         service.incident = incident;
@@ -50,7 +50,7 @@ public class MonitoredService {
 
 
     public ServiceStateChange changeStatusToDown() {
-        if (lastEvent == StatusEnum.DOWN) {
+        if (lastEvent == null || lastEvent == StatusEnum.DOWN) {
             cont = cont + 1;
         }else{
             cont = 1;
@@ -69,18 +69,12 @@ public class MonitoredService {
     public ServiceStateChange changeStatusToUp(){
 
         if (lastEvent == StatusEnum.UP) {
-            cont = cont + 1;
-        }else{
-            cont = 1;
-        }
-        lastEvent = StatusEnum.UP;
-        if (cont < 5) {
-            return ServiceStateChange.NO_CHANGE;
-        }
-        if(this.status == StatusEnum.UP){
             return ServiceStateChange.NO_CHANGE;
         }
         this.status = StatusEnum.UP;
+        this.cont = 0;
+        this.lastEvent = StatusEnum.UP;
+
         return ServiceStateChange.UP_CONFIRMED;
     }
 

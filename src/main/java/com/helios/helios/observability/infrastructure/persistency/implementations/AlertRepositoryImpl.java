@@ -7,7 +7,6 @@ import com.helios.helios.observability.core.repository.AlertRepository;
 import com.helios.helios.observability.infrastructure.mapper.Alert.AlertEntitiesMapper;
 import com.helios.helios.observability.infrastructure.persistency.entities.AlertEntity;
 import com.helios.helios.observability.infrastructure.persistency.repositories.JpaAlertRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class AlertRepositoryImpl implements AlertRepository {
     @Override
     public List<Alert> findAlertsByIncidentId(Long id) {
         Incident incident = incidentRepository.findById(id).orElseThrow();
-        List<Alert> alerts = incident.alerts();
+        List<Alert> alerts = incident.service().Alerts();
         return alerts;
     }
 
@@ -70,5 +69,11 @@ public class AlertRepositoryImpl implements AlertRepository {
         List<Alert> alerts = service.Alerts();
 
         return alerts;
+    }
+
+    @Override
+    public List<Alert> findOpenAlertsByServiceId(Long serviceId) {
+        List<AlertEntity> alerts = alertRepository.findByServiceIdAndSolvedAtIsNull(serviceId);
+        return entitiesMapper.listToCore(alerts);
     }
 }

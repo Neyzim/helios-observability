@@ -23,14 +23,14 @@ public class IncidentEntitiesMapper {
         if(incidentEntity == null){
             return null;
         }
-        return Incident.createNew(
+        return Incident.rehydrate(
+        incidentEntity.getStartedAt(),
+                incidentEntity.getId(),
         incidentEntity.getService() != null
           ? MonitoredServiceMapperUtil.toCoreEntity(incidentEntity.getService())
           : null,
-        incidentEntity.getAlerts() != null
-            ? alertMapper.listToCore(incidentEntity.getAlerts())
-            : null,
-            incidentEntity.getSeverity()
+        incidentEntity.getFinishedAt(),
+        incidentEntity.getSeverity()
         );
     }
 
@@ -40,10 +40,6 @@ public class IncidentEntitiesMapper {
         }
         IncidentEntity incidentEntity = new IncidentEntity();
         incidentEntity.setId(incident.id());
-        incidentEntity.setAlerts(incident.alerts() != null
-            ? alertMapper.listToInfra(incident.alerts())
-            : List.of());
-
         incidentEntity.setService( incident.service() != null
                 ? MonitoredServiceMapperUtil.toInfraEntity(incident.service())
                 : null);

@@ -19,7 +19,8 @@ public class AlertEntity {
     private LocalDateTime createdAt;
     private LocalDateTime solvedAt;
     private AlertType type;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "incident_id")
     private IncidentEntity incident;
 
     public AlertEntity() {

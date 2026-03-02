@@ -16,7 +16,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus
+        include: prometheus, metrics
   metrics:
+    export:
+      prometheus:
+        enabled: true
     tags:
       application: helios-observability

@@ -22,6 +22,7 @@ public class Alert {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime solvedAt;
     private AlertType type;
+    private Long incidentId;
 
     public static Alert createNew (MonitoredService service, AlertType type) {
         Alert alert = new Alert();
@@ -33,13 +34,14 @@ public class Alert {
         return alert;
     }
 
-    public static Alert rehydrate(Long id, MonitoredService service, LocalDateTime createdAt, LocalDateTime solvedAt, AlertType type) {
+    public static Alert rehydrate(Long id, MonitoredService service, LocalDateTime createdAt, LocalDateTime solvedAt, AlertType type, Long incidentId) {
         Alert alert = new Alert();
         alert.id = id;
         alert.service = service;
         alert.createdAt = createdAt;
         alert.solvedAt = solvedAt;
         alert.type = type;
+        alert.incidentId = incidentId;
         return alert;
     }
 
@@ -48,6 +50,13 @@ public class Alert {
             throw new AlertAlreadySolved("Alert already solved");
         }
         this.solvedAt = LocalDateTime.now();
+    }
+
+    public void assignIncident(Long incidentId){
+        if(this.incidentId != null){
+            throw new IllegalStateException("Alert already linked to an Incident");
+        }
+        this.incidentId = incidentId;
     }
 
     public Long id() {
@@ -68,6 +77,10 @@ public class Alert {
 
     public AlertType Type() {
         return type;
+    }
+
+    public Long IncidentId() {
+        return incidentId;
     }
 }
 

@@ -25,11 +25,9 @@ public class CheckServiceHealth {
 
     public void execute() {
         List<MonitoredService> monitoredServices = monitoredServiceRepository.listAllServices();
-
         for (MonitoredService service : monitoredServices) {
             boolean isUp = healthCheckGateway.isServiceUp(service.MonitoredEndpoint());
             serviceHealthHandler.handle(service, isUp);
-
             monitoredServiceRepository.save(service);
 
             if (isUp) {

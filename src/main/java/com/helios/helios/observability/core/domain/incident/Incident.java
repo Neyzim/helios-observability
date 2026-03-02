@@ -24,14 +24,12 @@ public class Incident {
      */
     private Long id;
     private MonitoredService service;
-    private List<Alert> alerts;
     private LocalDateTime startedAt = LocalDateTime.now();
     private LocalDateTime finishedAt;
     private IncidentSeverity severity;
 
     public static Incident createNew(
                     MonitoredService service,
-                    List<Alert> alerts,
                     IncidentSeverity severity
     ) {
         Incident incident = new Incident();
@@ -39,10 +37,6 @@ public class Incident {
             throw new IllegalArgumentException("Incident must have a Service");
         }
         incident.service = service;
-        if (alerts == null || alerts.isEmpty()){
-            throw new IllegalArgumentException("An incident must have at least one Alert");
-        }
-        incident.alerts = alerts;
         if (severity == null){
             throw new IllegalArgumentException("Incident must have a Severity");
         }
@@ -51,23 +45,15 @@ public class Incident {
         return incident;
     }
 
-    public static Incident rehydrate(LocalDateTime startedAt, Long id, MonitoredService service, List<Alert> alerts, LocalDateTime finishedAt, IncidentSeverity severity) {
+    public static Incident rehydrate(LocalDateTime startedAt, Long id, MonitoredService service, LocalDateTime finishedAt, IncidentSeverity severity) {
         Incident incident = new Incident();
         incident.startedAt = startedAt;
         incident.id = id;
         incident.service = service;
-        incident.alerts = alerts;
         incident.finishedAt = finishedAt;
         incident.severity = severity;
 
         return incident;
-    }
-
-    public void vinculateAlert(Alert alert){
-        if (this.finishedAt != null){
-            throw new IncidentNotOpen("Its not possible to vinculate an alert to an incident already finished");
-        }
-        this.alerts.add(alert);
     }
 
     public void finish(){
@@ -83,10 +69,6 @@ public class Incident {
 
     public MonitoredService service() {
         return service;
-    }
-
-    public List<Alert> alerts() {
-        return alerts;
     }
 
     public LocalDateTime startedAt() {

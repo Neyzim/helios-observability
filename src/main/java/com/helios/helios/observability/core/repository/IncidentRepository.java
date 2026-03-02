@@ -13,6 +13,6 @@ public interface IncidentRepository {
 
     Optional<Incident> findById(Long id);
 
-    List<Incident> findOpenIncidents();
+    Optional<Incident> findOpenIncidentByServiceId(Long serviceId);
 
 }

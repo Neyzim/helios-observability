@@ -18,16 +18,13 @@ public class IncidentEntity {
     @OneToOne
     @JoinColumn(name = "service_id")
     private MonitoredServiceEntity service;
-    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AlertEntity> alerts;
     private LocalDateTime startedAt;
     private LocalDateTime finishedAt;
     private IncidentSeverity severity;
 
-    public IncidentEntity(Long id, MonitoredServiceEntity service, List<AlertEntity> alerts, LocalDateTime startedAt, LocalDateTime finishedAt, IncidentSeverity severity) {
+    public IncidentEntity(Long id, MonitoredServiceEntity service, LocalDateTime startedAt, LocalDateTime finishedAt, IncidentSeverity severity) {
         this.id = id;
         this.service = service;
-        this.alerts = alerts;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.severity = severity;
@@ -50,14 +47,6 @@ public class IncidentEntity {
 
     public void setService(MonitoredServiceEntity service) {
         this.service = service;
-    }
-
-    public List<AlertEntity> getAlerts() {
-        return alerts;
-    }
-
-    public void setAlerts(List<AlertEntity> alerts) {
-        this.alerts = alerts;
     }
 
     public LocalDateTime getStartedAt() {

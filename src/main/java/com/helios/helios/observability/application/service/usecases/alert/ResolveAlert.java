@@ -1,6 +1,7 @@
 package com.helios.helios.observability.application.service.usecases.alert;
 
 import com.helios.helios.observability.core.domain.alert.Alert;
+import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.repository.AlertRepository;
 
 import java.util.List;
@@ -14,10 +15,11 @@ public class ResolveAlert {
     }
 
     public void resolve(Long serviceId){
-        Alert alert = alertRepository.findAlertById(serviceId).orElseThrow(
-                () -> new RuntimeException("Alert Not Found!")
-        );
-        alert.resolve();
-        alertRepository.save(alert);
+       List<Alert> alerts = alertRepository.findOpenAlertsByServiceId(serviceId);
+
+       for(Alert a : alerts){
+           a.resolve();
+           alertRepository.save(a);
+       }
     }
 }

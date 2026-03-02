@@ -74,13 +74,13 @@ public class UseCaseConfig {
     @Bean
     public HandleServiceRecovery handleServiceRecoveryUseCaseConfig(FinishIncident finishIncident,
                                                                     ResolveAlert resolveAlert){
-        return new HandleServiceRecovery(monitoredServiceRepositoryImpl, finishIncident, resolveAlert);
+        return new HandleServiceRecovery(monitoredServiceRepositoryImpl, finishIncident, resolveAlert, observabilityGateway);
     }
 
     @Bean
     public HandleServiceDown handleServiceDownUseCaseConfig(CreateIncident createIncident,
                                                             CreateAlert createAlert){
-        return new HandleServiceDown(monitoredServiceRepositoryImpl,createIncident, createAlert);
+        return new HandleServiceDown(monitoredServiceRepositoryImpl,createIncident, createAlert, alertRepository, observabilityGateway);
     }
 
     @Bean

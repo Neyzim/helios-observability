@@ -11,9 +11,12 @@ public class FinishIncident {
         this.incidentRepository = incidentRepository;
     }
 
-    public void finish(Long serviceId){
-        Incident incident = incidentRepository.findByServiceId(serviceId).orElseThrow();
-        incident.finish();
-        incidentRepository.save(incident);
+    public void finish(Long incidentId){
+       incidentRepository.findOpenIncidentByServiceId(incidentId)
+               .ifPresent(incident -> {
+                   incident.finish();
+                   incidentRepository.save(incident);
+               });
+
     }
 }
