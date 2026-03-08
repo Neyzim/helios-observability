@@ -42,8 +42,6 @@ public class AlertController {
     }
 
     @GetMapping(value = "/incident/{id}/alerts")
-
-    //não esta criando a relação alert e incident TODO
     public ResponseEntity<List<AlertResponseDTO>> listAlertsByIncidentId(@PathVariable Long id){
         List<Alert> alerts = alertRepository.findAlertsByIncidentId(id);
 
