@@ -8,6 +8,7 @@ import com.helios.helios.observability.infrastructure.persistency.entities.Incid
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class IncidentEntitiesMapper {
@@ -48,5 +49,14 @@ public class IncidentEntitiesMapper {
         incidentEntity.setSeverity(incident.severity());
 
         return incidentEntity;
+    }
+
+    public List<Incident> listToCoreEntity(List<IncidentEntity> infraIncident){
+        if(infraIncident== null){
+            return null;
+        }
+        return infraIncident.stream()
+                .map(this::toCoreEntity)
+                .collect(Collectors.toList());
     }
 }
