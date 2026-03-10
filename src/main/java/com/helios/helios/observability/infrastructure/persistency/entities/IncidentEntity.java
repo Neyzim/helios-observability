@@ -1,12 +1,9 @@
 package com.helios.helios.observability.infrastructure.persistency.entities;
 
-import com.helios.helios.observability.core.domain.alert.Alert;
 import com.helios.helios.observability.core.domain.incident.IncidentSeverity;
-import com.helios.helios.observability.core.domain.service.MonitoredService;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "incident")
@@ -15,7 +12,7 @@ public class IncidentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "service_id")
     private MonitoredServiceEntity service;
     private LocalDateTime startedAt;

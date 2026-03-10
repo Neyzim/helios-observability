@@ -24,8 +24,9 @@ public class HandleServiceRecovery {
     public void resolve(Long serviceId){
         MonitoredService service = monitoredServiceRepository.findServiceById(serviceId).orElseThrow();
         ServiceStateChange change = service.changeStatusToUp();
-        observabilityGateway.recordServiceUp(service.Name());
+
         if (change == ServiceStateChange.UP_CONFIRMED) {
+            observabilityGateway.recordServiceUp(service.Name());
             resolveAlert.resolve(serviceId);
             finishIncident.finish(serviceId);
         }
