@@ -1,7 +1,6 @@
 package com.helios.helios.observability.infrastructure.persistency.entities;
 
 import com.helios.helios.observability.core.domain.alert.AlertType;
-import com.helios.helios.observability.core.domain.service.MonitoredService;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

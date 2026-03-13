@@ -1,7 +1,5 @@
 package com.helios.helios.observability.infrastructure.healthcheck;
 
-import org.springframework.stereotype.Component;
-
 public class HeathCheckResult {
 
     private final boolean up;

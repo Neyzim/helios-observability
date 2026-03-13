@@ -1,7 +1,6 @@
 package com.helios.helios.observability.application.service.usecases.alert;
 
 import com.helios.helios.observability.core.domain.alert.Alert;
-import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.repository.AlertRepository;
 
 import java.util.List;

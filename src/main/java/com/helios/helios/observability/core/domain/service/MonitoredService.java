@@ -2,8 +2,6 @@ package com.helios.helios.observability.core.domain.service;
 
 import com.helios.helios.observability.core.domain.alert.Alert;
 import com.helios.helios.observability.core.domain.incident.Incident;
-import com.helios.helios.observability.core.exception.ServiceAlreadyDown;
-import com.helios.helios.observability.core.exception.ServiceAlreadyUp;
 
 import java.util.List;
 

@@ -4,7 +4,6 @@ import com.helios.helios.observability.core.domain.alert.Alert;
 import com.helios.helios.observability.core.domain.alert.AlertType;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.repository.AlertRepository;
-import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
 
 
 public class CreateAlert {

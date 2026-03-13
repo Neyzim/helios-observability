@@ -14,8 +14,6 @@ import com.helios.helios.observability.infrastructure.observability.adapter.Prom
 import com.helios.helios.observability.infrastructure.persistency.implementations.AlertRepositoryImpl;
 import com.helios.helios.observability.infrastructure.persistency.implementations.IncidentRepositoryImpl;
 import com.helios.helios.observability.infrastructure.persistency.implementations.MonitoredServiceRepositoryImpl;
-import com.helios.helios.observability.infrastructure.persistency.repositories.JpaAlertRepository;
-import com.helios.helios.observability.infrastructure.persistency.repositories.JpaIncidentRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

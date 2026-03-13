@@ -4,7 +4,6 @@ import com.helios.helios.observability.core.domain.incident.Incident;
 import com.helios.helios.observability.infrastructure.dto.incident.IncidentResponseDto;
 import com.helios.helios.observability.infrastructure.mapper.incident.IncidentDtoMapper;
 import com.helios.helios.observability.infrastructure.persistency.implementations.IncidentRepositoryImpl;
-import com.helios.helios.observability.infrastructure.persistency.repositories.JpaIncidentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

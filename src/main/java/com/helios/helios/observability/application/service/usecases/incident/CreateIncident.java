@@ -6,8 +6,6 @@ import com.helios.helios.observability.core.domain.incident.IncidentSeverity;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.repository.IncidentRepository;
 
-import java.util.List;
-
 public class CreateIncident {
 
     private final IncidentRepository incidentRepository;

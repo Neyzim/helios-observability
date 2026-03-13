@@ -2,7 +2,6 @@ package com.helios.helios.observability.infrastructure.mapper.incident;
 
 import com.helios.helios.observability.core.domain.incident.Incident;
 import com.helios.helios.observability.infrastructure.mapper.Alert.AlertEntitiesMapper;
-import com.helios.helios.observability.infrastructure.mapper.MonitoredService.MonitoredServiceEntitiesMapper;
 import com.helios.helios.observability.infrastructure.mapper.MonitoredService.MonitoredServiceMapperUtil;
 import com.helios.helios.observability.infrastructure.persistency.entities.IncidentEntity;
 import org.springframework.stereotype.Component;

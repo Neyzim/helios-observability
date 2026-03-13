@@ -1,7 +1,6 @@
 package com.helios.helios.observability.infrastructure.mapper.Alert;
 
 import com.helios.helios.observability.core.domain.alert.Alert;
-import com.helios.helios.observability.infrastructure.mapper.MonitoredService.MonitoredServiceEntitiesMapper;
 import com.helios.helios.observability.infrastructure.mapper.MonitoredService.MonitoredServiceMapperUtil;
 import com.helios.helios.observability.infrastructure.persistency.entities.AlertEntity;
 import com.helios.helios.observability.infrastructure.persistency.entities.IncidentEntity;
