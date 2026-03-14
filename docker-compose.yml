@@ -1,14 +1,47 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:latest
-    container_name: helios-observability
+    container_name: helios-postgres
     environment:
       - POSTGRES_USER=helios_admin
       - POSTGRES_PASSWORD=1234567890
       - POSTGRES_DB=helios
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5432:5432
     volumes:
-      - /var/lib/postgresql
+      - ./postgres_data:/var/lib/postgresql
+
+  helios-api:
+    build:
+      context: .
+    container_name: helios-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/helios
+      SPRING_DATASOURCE_USERNAME: helios_admin
+      SPRING_DATASOURCE_PASSWORD: 1234567890
+    depends_on:
+      - postgres
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: helios-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus_data:/prometheus
+    depends_on:
+      - helios-api
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: helios-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus

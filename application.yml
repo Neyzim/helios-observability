@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/helios
+    url: jdbc:postgresql://postgres:5432/helios
     username: helios_admin
     password: 1234567890
     driver-class-name: org.postgresql.Driver
