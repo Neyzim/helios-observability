@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+###Aplication###
+grafana_data/
+postgres_data/
+prometheus_data/

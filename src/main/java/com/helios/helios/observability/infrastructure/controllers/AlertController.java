@@ -4,6 +4,11 @@ import com.helios.helios.observability.core.domain.alert.Alert;
 import com.helios.helios.observability.infrastructure.dto.alert.AlertResponseDTO;
 import com.helios.helios.observability.infrastructure.mapper.Alert.AlertDtoMapper;
 import com.helios.helios.observability.infrastructure.persistency.implementations.AlertRepositoryImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/alert")
+@Tag(name = "Alert" ,description = "API for managing Alerts")
 public class AlertController {
 
     private final AlertRepositoryImpl alertRepository;
@@ -27,26 +33,45 @@ public class AlertController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AlertResponseDTO> findAlertById(@PathVariable Long id){
+    @Operation(summary = "Find Alert by ID", tags = {"Alert"})
+    @ApiResponses(
+            @ApiResponse(responseCode = "302", description = "Alert find")
+    )
+    public ResponseEntity<AlertResponseDTO> findAlertById(@Parameter(description = "Alert ID")
+                                                          @PathVariable Long id){
         Alert alert = alertRepository.findAlertById(id).orElseThrow();
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toResponseDto(alert));
     }
 
+    @Operation(summary = "List alerts unsolved", tags = {"Alert"})
+    @ApiResponses(
+            @ApiResponse(responseCode = "302", description = "Unsolved alerts listed")
+    )
     @GetMapping(value = "/unsolved")
     public ResponseEntity<List<AlertResponseDTO>> listAlertsUnsolved(){
         List<Alert> alerts = alertRepository.findUnsolvedAlerts();
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
     }
 
+    @Operation(summary = "List Alerts of an Incident", tags = {"Alert"})
+    @ApiResponses(
+            @ApiResponse(responseCode = "302", description = "Alerts listed!")
+    )
     @GetMapping(value = "/incident/{id}/alerts")
-    public ResponseEntity<List<AlertResponseDTO>> listAlertsByIncidentId(@PathVariable Long id){
+    public ResponseEntity<List<AlertResponseDTO>> listAlertsByIncidentId(@Parameter(description = "Incident ID")
+                                                                         @PathVariable Long id){
         List<Alert> alerts = alertRepository.findAlertsByIncidentId(id);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
     }
 
+    @Operation(summary = "List alerts from a Service", tags = {"Alert"})
+    @ApiResponses(
+            @ApiResponse(responseCode = "302", description = "Alerts Listed")
+    )
     @GetMapping(value = "/service/{id}/alerts")
-    public ResponseEntity<List<AlertResponseDTO>> listAlertsByServiceId(@PathVariable Long id){
+    public ResponseEntity<List<AlertResponseDTO>> listAlertsByServiceId(@Parameter(description = "Service ID")
+                                                                        @PathVariable Long id){
         List<Alert> alerts = alertRepository.findAlertsByServiceId(id);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
