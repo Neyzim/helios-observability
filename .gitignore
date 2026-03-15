@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-###Aplication###
+###Application###
 grafana_data/
 postgres_data/
 prometheus_data/

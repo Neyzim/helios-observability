@@ -19,6 +19,66 @@ A ideia é simular, em menor escala, funcionalidades encontradas em ferramentas 
 - Datadog
 - Pingdom
 ***
+## Execução da Aplicação:
+
+O Helios Observability pode ser executado utilizando Docker e Docker Compose, o que facilita a configuração do ambiente e das dependências como banco de dados e ferramentas de observabilidade.
+### Pré-requisitos:
+Certifique-se de ter instalado:
+- Docker
+- Docker Compose
+Verifique a instalação:
+
+```
+docker --version
+docker compose version
+```
+### Subindo a aplicação
+
+Clone o repositório
+```
+git clone https://github.com/Neyzim/helios-observability
+cd helios-observability
+```
+Suba todos os containers:
+```
+cd helios-observability
+```
+Esse comando irá iniciar:
+- Aplicação Helios Observability
+- PostgreSQL
+- Prometheus
+- Grafana
+
+Após a inicialização, a API estará disponível em:
+``http://localhost:8080``
+
+Parando os containers:
+
+```docker compose down```
+
+Se quiser remover os volumes, use:
+
+```docker compose down -v```
+***
+## Documentação da API
+
+A API Helios é documentada automaticamente com OpenApi/Swagger
+
+Após a inicialização, a documentação pode ser acessada em:
+```http://localhost:8080/swagger-ui/index.html#/```
+
+Na interface, é possivel:
+
+- Visualizar todos os Endpoints da API
+- Ver os Schemas e parâmetros das requisições
+- Testar chamadas diretamente pelo navegador
+
+A especificação OpenApi está disponível em:
+
+```http://localhost:8080/v3/api-docs```
+
+Essa especificação pode ser utilizada para integração com outras ferramentas ou geração automática de clientes da API.
+***
 ## Funcionalidades
 
 Atualmente o Helios Observability permite:
@@ -29,7 +89,7 @@ Atualmente o Helios Observability permite:
 - Resolver alertas automaticamente quando o serviço volta ao estado saudável
 - Expor métricas através de Spring Boot Actuator / Prometheus
 ***
-## Como o Sistema de Monitoramento Funciona
+## Como o Sistema de monitoramento Funciona
 
 O Helios Observability realiza verificações periódicas nos serviços registrados para determinar sua disponibilidade.
 
