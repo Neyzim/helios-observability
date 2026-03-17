@@ -8,6 +8,7 @@ import com.helios.helios.observability.core.domain.incident.Incident;
 import com.helios.helios.observability.core.domain.incident.IncidentSeverity;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.ServiceStateChange;
+import com.helios.helios.observability.core.exception.ServiceNotFound;
 import com.helios.helios.observability.core.gateway.ObservabilityGateway;
 import com.helios.helios.observability.core.repository.AlertRepository;
 import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
@@ -31,7 +32,8 @@ public class HandleServiceDown {
     }
 
     public void serviceIsDown(Long serviceId){
-        MonitoredService service = monitoredServiceRepository.findServiceById(serviceId).orElseThrow(() -> new RuntimeException("Service Not Found!"));
+        MonitoredService service = monitoredServiceRepository.findServiceById(serviceId)
+                .orElseThrow(() -> new ServiceNotFound());
         ServiceStateChange change = service.changeStatusToDown();
 
 

@@ -4,6 +4,8 @@ import com.helios.helios.observability.application.service.usecases.alert.Resolv
 import com.helios.helios.observability.application.service.usecases.incident.FinishIncident;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.ServiceStateChange;
+import com.helios.helios.observability.core.exception.ServiceCantBeEmpty;
+import com.helios.helios.observability.core.exception.ServiceNotFound;
 import com.helios.helios.observability.core.gateway.ObservabilityGateway;
 import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
 
@@ -22,7 +24,8 @@ public class HandleServiceRecovery {
     }
 
     public void resolve(Long serviceId){
-        MonitoredService service = monitoredServiceRepository.findServiceById(serviceId).orElseThrow();
+        MonitoredService service = monitoredServiceRepository.findServiceById(serviceId)
+                .orElseThrow(() -> new ServiceNotFound());
         ServiceStateChange change = service.changeStatusToUp();
 
         if (change == ServiceStateChange.UP_CONFIRMED) {
