@@ -1,7 +1,9 @@
 package com.helios.helios.observability.core.domain.alert;
 
 import com.helios.helios.observability.core.domain.service.MonitoredService;
+import com.helios.helios.observability.core.exception.AlertAlreadyLinked;
 import com.helios.helios.observability.core.exception.AlertAlreadySolved;
+import com.helios.helios.observability.core.exception.ServiceCantBeEmpty;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +29,7 @@ public class Alert {
     public static Alert createNew (MonitoredService service, AlertType type) {
         Alert alert = new Alert();
         if (service == null){
-            throw new IllegalArgumentException("Alert must have a Service");
+            throw new ServiceCantBeEmpty();
         }
         alert.service = service;
         alert.type = type;
@@ -47,14 +49,14 @@ public class Alert {
 
     public void resolve(){
         if (this.solvedAt != null){
-            throw new AlertAlreadySolved("Alert already solved");
+            throw new AlertAlreadySolved();
         }
         this.solvedAt = LocalDateTime.now();
     }
 
     public void assignIncident(Long incidentId){
         if(this.incidentId != null){
-            throw new IllegalStateException("Alert already linked to an Incident");
+            throw new AlertAlreadyLinked();
         }
         this.incidentId = incidentId;
     }

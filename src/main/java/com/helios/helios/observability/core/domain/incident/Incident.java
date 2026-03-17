@@ -2,6 +2,8 @@ package com.helios.helios.observability.core.domain.incident;
 
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.exception.IncidentAlreadySolved;
+import com.helios.helios.observability.core.exception.ServiceCantBeEmpty;
+import com.helios.helios.observability.core.exception.SeverityCantBeEmpty;
 
 import java.time.LocalDateTime;
 
@@ -30,11 +32,11 @@ public class Incident {
     ) {
         Incident incident = new Incident();
         if (service == null){
-            throw new IllegalArgumentException("Incident must have a Service");
+            throw new ServiceCantBeEmpty();
         }
         incident.service = service;
         if (severity == null){
-            throw new IllegalArgumentException("Incident must have a Severity");
+            throw new SeverityCantBeEmpty();
         }
         incident.severity = severity;
 
@@ -54,7 +56,7 @@ public class Incident {
 
     public void finish(){
         if (this.finishedAt != null){
-            throw new IncidentAlreadySolved("Incident already solved");
+            throw new IncidentAlreadySolved();
         }
         this.finishedAt = LocalDateTime.now();
     }
