@@ -2,6 +2,7 @@ package com.helios.helios.observability.infrastructure.controllers;
 
 import com.helios.helios.observability.application.service.usecases.monitoredservice.RegisterMonitoredService;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
+import com.helios.helios.observability.core.exception.ServiceNotFound;
 import com.helios.helios.observability.infrastructure.dto.monitoredservice.CreateMonitoredServiceRequest;
 import com.helios.helios.observability.infrastructure.dto.monitoredservice.ResponseMonitoredServiceDto;
 import com.helios.helios.observability.infrastructure.mapper.MonitoredService.MonitoredServiceDtoMapper;
@@ -51,12 +52,12 @@ public class MonitoredServiceController {
     @Operation(summary = "Get a service Details", tags = {"Services"})
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Service found"),
-            @ApiResponse(responseCode = "400", description = "Service Not Found")
+            @ApiResponse(responseCode = "404", description = "Service Not Found")
     })
     @GetMapping(value = "/{serviceName}")
     public ResponseEntity<ResponseMonitoredServiceDto> getServiceInfo(@Parameter(description = "Service Name") @PathVariable String serviceName){
         ResponseMonitoredServiceDto service =  monitoredServiceRepository.findServiceByName(serviceName)
-                .map(monitoredServiceDtoMapper::toDto).orElseThrow();
+                .map(monitoredServiceDtoMapper::toDto).orElseThrow(() -> new ServiceNotFound());
         return ResponseEntity.ok().body(service);
     }
 

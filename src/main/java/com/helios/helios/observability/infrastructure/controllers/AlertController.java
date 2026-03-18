@@ -1,6 +1,7 @@
 package com.helios.helios.observability.infrastructure.controllers;
 
 import com.helios.helios.observability.core.domain.alert.Alert;
+import com.helios.helios.observability.core.exception.AlertNotFound;
 import com.helios.helios.observability.infrastructure.dto.alert.AlertResponseDTO;
 import com.helios.helios.observability.infrastructure.mapper.Alert.AlertDtoMapper;
 import com.helios.helios.observability.infrastructure.persistency.implementations.AlertRepositoryImpl;
@@ -39,7 +40,7 @@ public class AlertController {
     )
     public ResponseEntity<AlertResponseDTO> findAlertById(@Parameter(description = "Alert ID")
                                                           @PathVariable Long id){
-        Alert alert = alertRepository.findAlertById(id).orElseThrow();
+        Alert alert = alertRepository.findAlertById(id).orElseThrow(() -> new AlertNotFound());
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toResponseDto(alert));
     }
 
