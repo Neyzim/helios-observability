@@ -39,47 +39,47 @@ public class AlertController {
     @GetMapping(value = "/{id}")
     @Operation(summary = "Find Alert by ID", tags = {"Alert"})
     @ApiResponses(
-            @ApiResponse(responseCode = "302", description = "Alert find")
+            @ApiResponse(responseCode = "200", description = "Alert find")
     )
     public ResponseEntity<AlertResponseDTO> findAlertById(@Parameter(description = "Alert ID")
                                                           @PathVariable Long id){
         Alert alert = alertRepository.findAlertById(id).orElseThrow(() -> new AlertNotFound());
         log.info("GET /alert/{} - fetching alert with id: {}", id, id);
-        return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toResponseDto(alert));
+        return ResponseEntity.ok().body(mapper.toResponseDto(alert));
     }
 
     @Operation(summary = "List alerts unsolved", tags = {"Alert"})
     @ApiResponses(
-            @ApiResponse(responseCode = "302", description = "Unsolved alerts listed")
+            @ApiResponse(responseCode = "200", description = "Unsolved alerts listed")
     )
     @GetMapping(value = "/unsolved")
     public ResponseEntity<List<AlertResponseDTO>> listAlertsUnsolved(){
         List<Alert> alerts = alertRepository.findUnsolvedAlerts();
         log.info("GET /alert/unsolved - Listing {} unsolved Alerts", alerts.size());
-        return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
+        return ResponseEntity.ok().body(mapper.toListResponseDto(alerts));
     }
 
     @Operation(summary = "List Alerts of an Incident", tags = {"Alert"})
     @ApiResponses(
-            @ApiResponse(responseCode = "302", description = "Alerts listed!")
+            @ApiResponse(responseCode = "200", description = "Alerts listed!")
     )
     @GetMapping(value = "/incident/{id}/alerts")
     public ResponseEntity<List<AlertResponseDTO>> listAlertsByIncidentId(@Parameter(description = "Incident ID")
                                                                          @PathVariable Long id){
         List<Alert> alerts = alertRepository.findAlertsByIncidentId(id);
         log.info("GET /alert/incident/{}/alerts - Listing Alerts vinculed to a IncidentID: {}", id, id);
-        return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
+        return ResponseEntity.ok().body(mapper.toListResponseDto(alerts));
     }
 
     @Operation(summary = "List alerts from a Service", tags = {"Alert"})
     @ApiResponses(
-            @ApiResponse(responseCode = "302", description = "Alerts Listed")
+            @ApiResponse(responseCode = "200", description = "Alerts Listed")
     )
     @GetMapping(value = "/service/{id}/alerts")
     public ResponseEntity<List<AlertResponseDTO>> listAlertsByServiceId(@Parameter(description = "Service ID")
                                                                         @PathVariable Long id){
         List<Alert> alerts = alertRepository.findAlertsByServiceId(id);
         log.info("GET /alert/service/{}/alerts - Listing all alerts of a serviceID: {}",id, id );
-        return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
+        return ResponseEntity.ok().body(mapper.toListResponseDto(alerts));
     }
 }

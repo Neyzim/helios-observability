@@ -38,12 +38,12 @@ public class IncidentController {
 
     @Operation(summary = "List open Incidents of a Service", tags = {"Incidents"})
     @ApiResponses(
-            @ApiResponse(responseCode = "302", description = "Incidents Listed")
+            @ApiResponse(responseCode = "200", description = "Incidents Listed")
     )
     @GetMapping("/{serviceId}/incidents")
     public ResponseEntity<List<IncidentResponseDto>> findAllOpenIncidentsByServiceId(@Parameter(description = "Service ID") @PathVariable Long serviceId){
         List<Incident> incident = incidentRepository.findOpenIncidentByServiceId(serviceId);
         log.info("GET /incident/{}/incidents - Listing all incidents of a ServiceID: {}",serviceId, serviceId );
-        return ResponseEntity.status(HttpStatus.FOUND).body(dtoMapper.listToDto(incident));
+        return ResponseEntity.ok().body(dtoMapper.listToDto(incident));
     }
 }

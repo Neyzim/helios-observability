@@ -38,7 +38,7 @@ public class MonitoredServiceController {
 
     @Operation(summary = "Save a new Service to be monitored", tags = {"Services"})
     @ApiResponses(
-            @ApiResponse(responseCode = "201", description = "Service successfully saved")
+            @ApiResponse(responseCode = "200", description = "Service successfully saved")
     )
     @PostMapping(value = "/save")
     public ResponseEntity<ResponseMonitoredServiceDto> saveService(
@@ -50,7 +50,7 @@ public class MonitoredServiceController {
 
         MonitoredService savedService = registerMonitoredService.registerNewMonitoredService(service.serviceName(), service.monitoredEndpoint(), service.sla());
         log.info("POST service/save - Saving a new Monitored Service");
-        return ResponseEntity.status(HttpStatus.CREATED).body(monitoredServiceDtoMapper.toDto(savedService));
+        return ResponseEntity.ok().body(monitoredServiceDtoMapper.toDto(savedService));
     }
 
     @Operation(summary = "Get a service Details", tags = {"Services"})
