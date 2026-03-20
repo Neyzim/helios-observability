@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ public class AlertController {
 
     private final AlertRepositoryImpl alertRepository;
     private final AlertDtoMapper mapper;
+    private static final Logger log = LoggerFactory.getLogger(AlertController.class);
 
 
     public AlertController(AlertRepositoryImpl alertRepository, AlertDtoMapper mapper) {
@@ -41,6 +44,7 @@ public class AlertController {
     public ResponseEntity<AlertResponseDTO> findAlertById(@Parameter(description = "Alert ID")
                                                           @PathVariable Long id){
         Alert alert = alertRepository.findAlertById(id).orElseThrow(() -> new AlertNotFound());
+        log.info("GET /alert/{} - fetching alert with id: {}", id, id);
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toResponseDto(alert));
     }
 
@@ -51,6 +55,7 @@ public class AlertController {
     @GetMapping(value = "/unsolved")
     public ResponseEntity<List<AlertResponseDTO>> listAlertsUnsolved(){
         List<Alert> alerts = alertRepository.findUnsolvedAlerts();
+        log.info("GET /alert/unsolved - Listing {} unsolved Alerts", alerts.size());
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
     }
 
@@ -62,7 +67,7 @@ public class AlertController {
     public ResponseEntity<List<AlertResponseDTO>> listAlertsByIncidentId(@Parameter(description = "Incident ID")
                                                                          @PathVariable Long id){
         List<Alert> alerts = alertRepository.findAlertsByIncidentId(id);
-
+        log.info("GET /alert/incident/{}/alerts - Listing Alerts vinculed to a IncidentID: {}", id, id);
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
     }
 
@@ -74,7 +79,7 @@ public class AlertController {
     public ResponseEntity<List<AlertResponseDTO>> listAlertsByServiceId(@Parameter(description = "Service ID")
                                                                         @PathVariable Long id){
         List<Alert> alerts = alertRepository.findAlertsByServiceId(id);
-
+        log.info("GET /alert/service/{}/alerts - Listing all alerts of a serviceID: {}",id, id );
         return ResponseEntity.status(HttpStatus.FOUND).body(mapper.toListResponseDto(alerts));
     }
 }

@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,7 @@ public class MonitoredServiceController {
     private final MonitoredServiceRepositoryImpl monitoredServiceRepository;
     private final RegisterMonitoredService registerMonitoredService;
     private final MonitoredServiceDtoMapper monitoredServiceDtoMapper;
+    private static final Logger log = LoggerFactory.getLogger(MonitoredServiceController.class);
 
     public MonitoredServiceController(MonitoredServiceRepositoryImpl monitoredServiceRepository, RegisterMonitoredService registerMonitoredService, MonitoredServiceDtoMapper monitoredServiceDtoMapper) {
         this.monitoredServiceRepository = monitoredServiceRepository;
@@ -46,6 +49,7 @@ public class MonitoredServiceController {
             @RequestBody CreateMonitoredServiceRequest service){
 
         MonitoredService savedService = registerMonitoredService.registerNewMonitoredService(service.serviceName(), service.monitoredEndpoint(), service.sla());
+        log.info("POST service/save - Saving a new Monitored Service");
         return ResponseEntity.status(HttpStatus.CREATED).body(monitoredServiceDtoMapper.toDto(savedService));
     }
 
@@ -58,6 +62,7 @@ public class MonitoredServiceController {
     public ResponseEntity<ResponseMonitoredServiceDto> getServiceInfo(@Parameter(description = "Service Name") @PathVariable String serviceName){
         ResponseMonitoredServiceDto service =  monitoredServiceRepository.findServiceByName(serviceName)
                 .map(monitoredServiceDtoMapper::toDto).orElseThrow(() -> new ServiceNotFound());
+        log.info("GET /service/{} - Getting information of a service: {}",service, service);
         return ResponseEntity.ok().body(service);
     }
 
@@ -71,6 +76,7 @@ public class MonitoredServiceController {
                 .stream()
                 .map(monitoredServiceDtoMapper::toDto)
                 .toList();
+        log.info("GET /service/list - Listing all services saved");
         return ResponseEntity.ok(services);
     }
 
@@ -81,6 +87,7 @@ public class MonitoredServiceController {
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> delete(@Parameter(description = "Service ID")@PathVariable Long id){
         monitoredServiceRepository.deleteServiceById(id);
+        log.info("DELETE /service/delete/{} - Deleting Service", id);
         return ResponseEntity.ok().body("Service Deleted: " + id);
     }
 

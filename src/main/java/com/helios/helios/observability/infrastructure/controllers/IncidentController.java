@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ public class IncidentController {
 
     private final IncidentRepositoryImpl incidentRepository;
     private final IncidentDtoMapper dtoMapper;
+    private static final Logger log = LoggerFactory.getLogger(IncidentController.class);
+
 
 
     public IncidentController(IncidentRepositoryImpl incidentRepository, IncidentDtoMapper dtoMapper) {
@@ -39,6 +43,7 @@ public class IncidentController {
     @GetMapping("/{serviceId}/incidents")
     public ResponseEntity<List<IncidentResponseDto>> findAllOpenIncidentsByServiceId(@Parameter(description = "Service ID") @PathVariable Long serviceId){
         List<Incident> incident = incidentRepository.findOpenIncidentByServiceId(serviceId);
+        log.info("GET /incident/{}/incidents - Listing all incidents of a ServiceID: {}",serviceId, serviceId );
         return ResponseEntity.status(HttpStatus.FOUND).body(dtoMapper.listToDto(incident));
     }
 }
