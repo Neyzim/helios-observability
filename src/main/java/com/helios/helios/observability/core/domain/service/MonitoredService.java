@@ -66,7 +66,7 @@ public class MonitoredService {
 
     public ServiceStateChange changeStatusToUp(){
 
-        if (this.Status() == StatusEnum.UP) {
+        if (lastEvent == StatusEnum.UP) {
             return ServiceStateChange.NO_CHANGE;
         }
         this.status = StatusEnum.UP;

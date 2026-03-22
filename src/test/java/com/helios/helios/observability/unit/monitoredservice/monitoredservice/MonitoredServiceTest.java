@@ -28,6 +28,10 @@ public class MonitoredServiceTest{
                 "Count Test Endpoint",
                 SLAServiceEnum.ATTENTION
         );
+        service.changeStatusToDown();
+        service.changeStatusToDown();
+        service.changeStatusToDown();
+
         assertEquals(3, service.Cont());
     }
 
@@ -113,7 +117,6 @@ public class MonitoredServiceTest{
 
         service.changeStatusToDown();
         service.changeStatusToUp();
-
         assertEquals(0, service.Cont());
     }
 
@@ -126,7 +129,7 @@ public class MonitoredServiceTest{
 
         ServiceStateChange result = service.changeStatusToUp();
 
-        assertEquals(ServiceStateChange.NO_CHANGE, result);
+        assertEquals(ServiceStateChange.UP_CONFIRMED, result);
     }
 
     @Test
@@ -136,17 +139,16 @@ public class MonitoredServiceTest{
                 "Handle failure and recover",
                 SLAServiceEnum.ATTENTION);
 
-        // 4 falhas → ainda UP
+
         for (int i = 0; i < 4; i++) {
             service.changeStatusToDown();
         }
         assertEquals(StatusEnum.UP, service.Status());
 
-        // 5ª falha → DOWN
+
         service.changeStatusToDown();
         assertEquals(StatusEnum.DOWN, service.Status());
 
-        // recuperação
         service.changeStatusToUp();
         assertEquals(StatusEnum.UP, service.Status());
     }

@@ -18,7 +18,6 @@ public class Incident {
         * An incident only can be resolved once.
         * An resolved incident can never be opened again.
         * An incident need to have a severity.
-        * An incident always have a list of alerts.
      */
     private Long id;
     private MonitoredService service;
