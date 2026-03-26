@@ -1,4 +1,4 @@
-package com.helios.helios.observability.unit.monitoredservice.monitoredservice;
+package com.helios.helios.observability.unit.monitoredservice;
 
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.SLAServiceEnum;

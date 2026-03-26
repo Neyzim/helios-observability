@@ -1,4 +1,4 @@
-package com.helios.helios.observability.unit.monitoredservice.incident;
+package com.helios.helios.observability.unit.incident;
 
 import com.helios.helios.observability.core.domain.incident.Incident;
 import com.helios.helios.observability.core.domain.incident.IncidentSeverity;
