@@ -43,8 +43,6 @@ class CheckServiceHealthTest {
         when(service1.MonitoredEndpoint()).thenReturn("url1");
         when(service2.MonitoredEndpoint()).thenReturn("url2");
 
-        when(service1.Name()).thenReturn("Service 1");
-        when(service2.Name()).thenReturn("Service 2");
 
         when(healthCheckGateway.isServiceUp("url1")).thenReturn(true);
         when(healthCheckGateway.isServiceUp("url2")).thenReturn(false);
@@ -56,11 +54,6 @@ class CheckServiceHealthTest {
         verify(handler).handle(service1, true);
         verify(handler).handle(service2, false);
 
-        verify(repository).save(service1);
-        verify(repository).save(service2);
-
-        verify(observabilityGateway).recordServiceUp("Service 1");
-        verify(observabilityGateway).recordServiceDown("Service 2");
     }
 
     @Test

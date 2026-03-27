@@ -5,6 +5,8 @@ import com.helios.helios.observability.application.service.usecases.orquestrator
 import com.helios.helios.observability.application.service.usecases.orquestrator.ServiceHealthHandler;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.ServiceStateChange;
+import com.helios.helios.observability.core.gateway.ObservabilityGateway;
+import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -23,6 +25,12 @@ class ServiceHealthHandlerTest {
     @InjectMocks
     private ServiceHealthHandler handler;
 
+    @Mock
+    private MonitoredServiceRepository monitoredServiceRepository;
+
+    @Mock
+    private ObservabilityGateway observabilityGateway;
+
     @Test
     void shouldCallRecoveryWhenServiceIsUpAndConfirmed() {
         // given
@@ -31,13 +39,12 @@ class ServiceHealthHandlerTest {
         when(service.changeStatusToUp())
                 .thenReturn(ServiceStateChange.UP_CONFIRMED);
 
-        when(service.Id()).thenReturn(1L);
 
         // when
         handler.handle(service, true);
 
         // then
-        verify(handleServiceRecovery).resolve(1L);
+        verify(handleServiceRecovery).resolve(service);
         verifyNoInteractions(handleServiceDown);
     }
 
@@ -48,7 +55,11 @@ class ServiceHealthHandlerTest {
         when(service.changeStatusToUp())
                 .thenReturn(ServiceStateChange.DOWN_CONFIRMED);
 
-        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery);
+        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown,
+                                                                handleServiceRecovery,
+                                                                monitoredServiceRepository,
+                                                                observabilityGateway
+                                                                );
 
         handler.handle(service, true);
 
@@ -63,13 +74,12 @@ class ServiceHealthHandlerTest {
         when(service.changeStatusToDown())
                 .thenReturn(ServiceStateChange.DOWN_CONFIRMED);
 
-        when(service.Id()).thenReturn(1L);
 
-        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery);
+        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery, monitoredServiceRepository, observabilityGateway);
 
         handler.handle(service, false);
 
-        verify(handleServiceDown).serviceIsDown(1L);
+        verify(handleServiceDown).serviceIsDown(service);
         verifyNoInteractions(handleServiceRecovery);
     }
 
@@ -80,7 +90,7 @@ class ServiceHealthHandlerTest {
         when(service.changeStatusToDown())
                 .thenReturn(ServiceStateChange.UP_CONFIRMED);
 
-        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery);
+        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery, monitoredServiceRepository, observabilityGateway);
 
         handler.handle(service, false);
 
