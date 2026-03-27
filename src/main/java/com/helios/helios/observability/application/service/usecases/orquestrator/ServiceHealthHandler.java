@@ -2,15 +2,21 @@ package com.helios.helios.observability.application.service.usecases.orquestrato
 
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.ServiceStateChange;
+import com.helios.helios.observability.core.gateway.ObservabilityGateway;
+import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
 
 public class ServiceHealthHandler {
 
     private final HandleServiceDown handleServiceDown;
     private final HandleServiceRecovery handleServiceRecovery;
+    private final MonitoredServiceRepository monitoredServiceRepository;
+    private final ObservabilityGateway observabilityGateway;
 
-    public ServiceHealthHandler(HandleServiceDown handleServiceDown, HandleServiceRecovery handleServiceRecovery) {
+    public ServiceHealthHandler(HandleServiceDown handleServiceDown, HandleServiceRecovery handleServiceRecovery, MonitoredServiceRepository monitoredServiceRepository, ObservabilityGateway observabilityGateway) {
         this.handleServiceDown = handleServiceDown;
         this.handleServiceRecovery = handleServiceRecovery;
+        this.monitoredServiceRepository = monitoredServiceRepository;
+        this.observabilityGateway = observabilityGateway;
     }
 
     public void handle(MonitoredService service, boolean isUp){
@@ -19,12 +25,16 @@ public class ServiceHealthHandler {
         if(isUp){
             change = service.changeStatusToUp();
             if(change == ServiceStateChange.UP_CONFIRMED) {
-                handleServiceRecovery.resolve(service.Id());
+                handleServiceRecovery.resolve(service);
+                observabilityGateway.recordServiceUp(service.Name());
+                monitoredServiceRepository.save(service);
             }
         }else{
             change = service.changeStatusToDown();
             if(change == ServiceStateChange.DOWN_CONFIRMED) {
-                handleServiceDown.serviceIsDown(service.Id());
+                handleServiceDown.serviceIsDown(service);
+                observabilityGateway.recordServiceDown(service.Name());
+                monitoredServiceRepository.save(service);
             }
         }
 

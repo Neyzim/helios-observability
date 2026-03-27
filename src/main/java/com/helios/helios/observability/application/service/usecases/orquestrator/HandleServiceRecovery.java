@@ -3,36 +3,22 @@ package com.helios.helios.observability.application.service.usecases.orquestrato
 import com.helios.helios.observability.application.service.usecases.alert.ResolveAlert;
 import com.helios.helios.observability.application.service.usecases.incident.FinishIncident;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
-import com.helios.helios.observability.core.domain.service.ServiceStateChange;
-import com.helios.helios.observability.core.exception.ServiceCantBeEmpty;
-import com.helios.helios.observability.core.exception.ServiceNotFound;
-import com.helios.helios.observability.core.gateway.ObservabilityGateway;
-import com.helios.helios.observability.core.repository.MonitoredServiceRepository;
 
 public class HandleServiceRecovery {
 
-    private final MonitoredServiceRepository monitoredServiceRepository;
+
     private final FinishIncident finishIncident;
     private final ResolveAlert resolveAlert;
-    private final ObservabilityGateway observabilityGateway;
 
-    public HandleServiceRecovery(MonitoredServiceRepository monitoredServiceRepository, FinishIncident finishIncident, ResolveAlert resolveAlert, ObservabilityGateway observabilityGateway) {
-        this.monitoredServiceRepository = monitoredServiceRepository;
+    public HandleServiceRecovery(FinishIncident finishIncident, ResolveAlert resolveAlert) {
         this.finishIncident = finishIncident;
         this.resolveAlert = resolveAlert;
-        this.observabilityGateway = observabilityGateway;
     }
 
-    public void resolve(Long serviceId){
-        MonitoredService service = monitoredServiceRepository.findServiceById(serviceId)
-                .orElseThrow(() -> new ServiceNotFound());
-        ServiceStateChange change = service.changeStatusToUp();
+    public void resolve(MonitoredService service){
 
-        if (change == ServiceStateChange.UP_CONFIRMED) {
-            observabilityGateway.recordServiceUp(service.Name());
-            resolveAlert.resolve(serviceId);
-            finishIncident.finish(serviceId);
-        }
-        monitoredServiceRepository.save(service);
+            resolveAlert.resolve(service.Id());
+            finishIncident.finish(service.Id());
+
     }
 }

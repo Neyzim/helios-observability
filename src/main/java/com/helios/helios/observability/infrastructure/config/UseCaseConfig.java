@@ -65,26 +65,28 @@ public class UseCaseConfig {
     public CheckServiceHealth checkServiceHealthUseCaseConfig(ServiceHealthHandler serviceHealthHandler){
         return new CheckServiceHealth(monitoredServiceRepositoryImpl,
                 healthCheckGateway,
-                serviceHealthHandler,
-                observabilityGateway);
+                serviceHealthHandler
+                );
     }
 
     @Bean
     public HandleServiceRecovery handleServiceRecoveryUseCaseConfig(FinishIncident finishIncident,
                                                                     ResolveAlert resolveAlert){
-        return new HandleServiceRecovery(monitoredServiceRepositoryImpl, finishIncident, resolveAlert, observabilityGateway);
+        return new HandleServiceRecovery(finishIncident, resolveAlert);
     }
 
     @Bean
     public HandleServiceDown handleServiceDownUseCaseConfig(CreateIncident createIncident,
                                                             CreateAlert createAlert){
-        return new HandleServiceDown(monitoredServiceRepositoryImpl,createIncident, createAlert, alertRepository, observabilityGateway);
+        return new HandleServiceDown(createIncident, createAlert, alertRepository);
     }
 
     @Bean
     public ServiceHealthHandler serviceHealthHandlerUseCaseConfig(HandleServiceDown handleServiceDown,
                                                                   HandleServiceRecovery handleServiceRecovery){
         return new ServiceHealthHandler(handleServiceDown,
-                                        handleServiceRecovery);
+                                        handleServiceRecovery,
+                                        monitoredServiceRepositoryImpl,
+                                        observabilityGateway);
     }
 }
