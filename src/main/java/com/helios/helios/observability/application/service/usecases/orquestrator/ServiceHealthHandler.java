@@ -27,16 +27,14 @@ public class ServiceHealthHandler {
             if(change == ServiceStateChange.UP_CONFIRMED) {
                 handleServiceRecovery.resolve(service);
                 observabilityGateway.recordServiceUp(service.Name());
-                monitoredServiceRepository.save(service);
             }
         }else{
             change = service.changeStatusToDown();
             if(change == ServiceStateChange.DOWN_CONFIRMED) {
                 handleServiceDown.serviceIsDown(service);
                 observabilityGateway.recordServiceDown(service.Name());
-                monitoredServiceRepository.save(service);
             }
         }
-
+        monitoredServiceRepository.save(service);
     }
 }
