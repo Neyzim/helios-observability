@@ -1,83 +1,193 @@
 # Helios Observability
 
-Helios Observability é uma API REST desenvolvida em Java com Spring Boot cujo objetivo é fornecer um sistema simples de monitoramento de serviços, permitindo acompanhar a disponibilidade de hosts atraves de ICMP (Ping).
+Helios Observability é uma API REST desenvolvida em **Java + Spring Boot** para monitoramento de disponibilidade de serviços.
 
-A aplicação coleta informações de disponibilidade, gera alertas, e pode evoluir para incidentes, fornecendo uma base para observabilidade de sistemas.
-***
+O projeto foi construído com foco em **engenharia backend, arquitetura limpa e modelagem de domínio**, simulando em menor escala funcionalidades encontradas em ferramentas como **Uptime Kuma, Pingdom, Datadog e Prometheus-based monitoring systems**.
+
+Seu principal objetivo é monitorar a disponibilidade de hosts através de **ICMP (Ping)**, registrar eventos operacionais, gerar alertas automaticamente e expor métricas para observabilidade.
+
+---
+
 ## Objetivo do Projeto
 
-O projeto foi criado para explorar conceitos de:
-- Observabilidade de sistemas
-- Arquitetura limpa (Clean Architecture)
-- Domain Driven Design (DDD)
-- Monitoramento de serviços
-- Alertas e gestão de incidentes
+Este projeto foi desenvolvido como estudo prático de conceitos fundamentais para backend engineering:
 
-A ideia é simular, em menor escala, funcionalidades encontradas em ferramentas como:
-- Prometheus
-- Uptime Kuma
-- Datadog
-- Pingdom
-***
-## Funcionalidades
-
-Atualmente o Helios Observability permite:
-
-- Monitorar serviços via ICMP (Ping)
-- Registrar eventos de disponibilidade (UP / DOWN)
-- Gerar alertas quando falhas são detectadas
-- Resolver alertas automaticamente quando o serviço volta ao estado saudável
-- Expor métricas através de Spring Boot Actuator / Prometheus
-***
-## Arquitetura:
-
-O projeto foi desenvolvido utilizando:
-- Domain Driven Design (DDD)
 - Clean Architecture
+- Domain-Driven Design (DDD)
+- SOLID
+- modelagem de domínio
+- observabilidade de sistemas
+- monitoramento e incident lifecycle
+- testes orientados a regras de negócio
+- métricas e dashboards
 
-A aplicação separa responsabilidades entre as seguintes camadas:
+Mais do que implementar funcionalidades, o objetivo foi exercitar **decisões arquiteturais e separação clara de responsabilidades**, priorizando código desacoplado, testável e evolutivo.
 
-- Domain – regras de negócio
-- Application / Use Cases – lógica de aplicação
-- Infrastructure – banco de dados, integrações
-- Interfaces – controllers da API
+---
 
-Essa separação permite maior testabilidade, desacoplamento e evolução do sistema.
-***
+## Problema Resolvido
 
-## Como o Sistema de monitoramento Funciona
+Sistemas distribuídos precisam de mecanismos confiáveis para identificar indisponibilidades rapidamente.
 
-O Helios Observability realiza verificações periódicas nos serviços registrados para determinar sua disponibilidade.
+O Helios Observability resolve esse problema através de:
 
-O fluxo de monitoramento segue as etapas abaixo:
-### 1. Registro do Serviço
-Cada serviço monitorado contém informações como:
-- nome do serviço
-- endereço do endpoint
-- política de SLA
+- monitoramento periódico de serviços
+- identificação automática de falhas
+- geração de alertas
+- resolução automática após recuperação
+- exposição de métricas operacionais
 
-Essas informações são armazenadas e utilizadas pelo mecanismo de monitoramento.
+---
 
-### 2. Scheduler de Verificação
-Um scheduler interno executa verificações periódicas nos serviços cadastrados.
-Para cada serviço monitorado, o sistema:
-- executa a verificação
-- registra o resultado da verificação
+## Principais Funcionalidades
 
-Exemplos:
-- ICMP Check (Ping)
-- envia um ICMP Echo Request para o host
-- aguarda resposta (Echo Reply)
-- registra sucesso ou falha da comunicação
+Atualmente o sistema permite:
 
-### 3. Avaliação do Estado do Serviço
-Após a execução do check, o sistema determina o estado do serviço:
-- UP → o serviço respondeu corretamente
-- DOWN → falha de conexão ou ausência de resposta
+- monitoramento de hosts via ICMP (Ping)
+- registro de estados `UP` e `DOWN`
+- geração automática de alertas
+- resolução automática quando o serviço volta ao estado saudável
+- histórico de eventos de disponibilidade
+- métricas expostas via Prometheus
+- dashboards prontos no Grafana
+- documentação automática via Swagger/OpenAPI
 
-Esse estado é utilizado para alimentar o sistema de alertas e as métricas da aplicação.
-***
-## Tecnologias Utilizadas:
+---
+
+## Decisões de Arquitetura
+
+A arquitetura foi projetada utilizando **Clean Architecture + DDD**.
+
+A principal decisão foi **isolar as regras de negócio da infraestrutura e do framework Spring**.
+
+Isso significa que:
+
+> o domínio não depende de controllers, banco de dados, JPA ou detalhes do framework
+
+Essa abordagem melhora:
+
+- testabilidade
+- manutenção
+- escalabilidade do projeto
+- clareza da regra de negócio
+- evolução futura
+
+### Estrutura em camadas
+
+```text
+src/main/java
+├── core
+│   ├── domain
+│   ├── service
+│   └── gateway
+│
+├── application
+│   └── usecases
+│
+├── infrastructure
+│   ├── controllers
+│   ├── persistence
+│   ├── gateways
+│   └── exception
+```
+## Responsabilidades
+
+### Domain
+
+Contém:
+
+- entidades
+- regras de negócio
+- invariantes
+- transições de estado
+
+Exemplo:
+
+- mudança de status UP / DOWN
+- contagem de falhas consecutivas
+- resolução automática de alertas
+
+## Application / Use Cases
+
+Responsável por orquestrar fluxos da aplicação.
+
+Exemplo:
+
+- registrar serviço
+- executar health checks
+- processar mudanças de estado
+- acionar incident workflow
+
+## Infrastructure
+
+Camada responsável por detalhes externos:
+
+- persistência
+- JPA / PostgreSQL
+- integração com Prometheus
+- scheduler
+- controllers REST
+- tratamento HTTP de exceções
+
+## Principais Decisões Técnicas
+### 1. Monitoramento via Scheduler
+
+O sistema utiliza um scheduler interno para realizar verificações periódicas.
+
+Essa decisão foi tomada por:
+
+- simplicidade de implementação
+- previsibilidade
+- fácil evolução para jobs distribuídos
+
+### 2.Estratégia inicial com ICMP
+
+A primeira estratégia implementada foi ICMP Ping.
+
+Escolhi essa abordagem por:
+
+- baixo custo operacional
+- simplicidade
+- ótima base para evolução
+
+A arquitetura foi preparada para futuras estratégias como:
+
+- HTTP health checks
+- TCP socket checks
+- Custom probes
+
+Seguindo o princípio Open/Closed.
+
+### 3. Lifecycle de incidentes
+
+O projeto modela o ciclo de vida do serviço monitorado.
+
+Fluxo simplificado:
+
+```UP → DOWN → ALERT → RESOLVED```
+
+Essa modelagem foi pensada para refletir cenários reais de observabilidade.
+
+## Estratégia de Testes
+
+Um dos principais focos do projeto foi manter a regra de negócio altamente testável.
+
+A maior parte da lógica crítica foi mantida no domínio para permitir testes unitários independentes do Spring.
+
+Os testes cobrem cenários como:
+
+- Mudança de estado do serviço
+- Reset de contador após recuperação
+- Criação automática de alertas
+- Resolução de incidentes
+- Comportamento do scheduler
+- Tratamento de exceções
+
+Exemplo de regra testada:
+
+```contador de falhas consecutivas deve ser resetado após recuperação do serviço```
+
+## Stack Tecnológica
 - Java
 - Spring Boot
 - Spring Web
@@ -85,121 +195,110 @@ Esse estado é utilizado para alimentar o sistema de alertas e as métricas da a
 - PostgreSQL
 - Spring Boot Actuator
 - Prometheus
-- Grafana (Para Visualização)
-- OpenApi/Swagger (Para documentação)
-***
-
-## Execução da Aplicação:
-
-O Helios Observability pode ser executado utilizando Docker e Docker Compose, o que facilita a configuração do ambiente e das dependências como banco de dados e ferramentas de observabilidade.
-### Pré-requisitos:
-Certifique-se de ter instalado:
+- Grafana
 - Docker
 - Docker Compose
-Verifique a instalação:
+- Swagger / OpenAPI
+- JUnit 5
 
-```
-docker --version
-docker compose version
-```
-### Subindo a aplicação
-
-Clone o repositório
-```
-git clone https://github.com/Neyzim/helios-observability
-cd helios-observability
-```
-Suba todos os containers:
-```
-cd helios-observability
-docker compose up --build
-```
-Esse comando irá iniciar:
-- Aplicação Helios Observability
-- PostgreSQL
-- Prometheus
-- Grafana
-
-Após a inicialização, a API estará disponível em:
-``http://localhost:8080``
-
-Parando os containers:
-
-```docker compose down```
-
-Se quiser remover os volumes, use:
-
-```docker compose down -v```
-***
-## Documentação da API
-
-A API Helios é documentada automaticamente com OpenApi/Swagger
-
-Após a inicialização, a documentação pode ser acessada em:
-```http://localhost:8080/swagger-ui/index.html#/```
-
-Na interface, é possivel:
-
-- Visualizar todos os Endpoints da API
-- Ver os Schemas e parâmetros das requisições
-- Testar chamadas diretamente pelo navegador
-
-A especificação OpenApi está disponível em:
-
-```http://localhost:8080/v3/api-docs```
-
-Essa especificação pode ser utilizada para integração com outras ferramentas ou geração automática de clientes da API.
-***
 ## Observabilidade
 
-### Métricas
-
-A aplicação expõe métricas via Spring Boot Actuator que podem ser coletadas pelo Prometheus.
-Endpoint de métricas:
+A aplicação expõe métricas via:
 
 ```/actuator/prometheus```
-***
-### Dashboard de Observabilidade
 
-Para Visualização das métricas coletadas pelo prometheus, o projeto utiliza o Grafana.
+Essas métricas são coletadas automaticamente pelo Prometheus.
 
-O Grafana é responsável por apresentar os dados de observabilidade através de Dashboards interativos.  
+## Dashboard no Grafana
 
-O projeto utiliza Grafana Provisioning, permitindo que dashboards e datasources sejam carregados automaticamente ao iniciar os containers.
+O projeto inclui provisionamento automático de dashboards.
 
-Exemplo: 
+Ao subir os containers, o dashboard já fica disponível automaticamente.
+
+Métricas exibidas:
+
+- serviços UP
+- serviços DOWN
+- total monitorado
+- linha do tempo de disponibilidade
+- uso de memória JVM
+- volume de requisições HTTP
+
+Exemplo:
+
 ![img.png](misc/img.png)
-Este dashboard está disponivel após subir a aplicação via docker.
 
+## Como Executar
+### Pré-requisitos
+- Docker
+- Docker Compose
 
-Após subir a aplicação, o grafana está disponível em:
+Verifique:
+
+- docker --version
+- docker compose version
+
+### Clone o projeto
+``` 
+git clone https://github.com/Neyzim/helios-observability```
+cd helios-observability
+```
+### Subindo o ambiente
+```docker compose up --build ```
+
+### Containers iniciados:
+
+- API
+- PostgreSQL
+- Prometheus
+- Grafana 
+
+### Endpoints
+
+API:
+
+```http://localhost:8080```
+
+Swagger:
+
+```http://localhost:8080/swagger-ui/index.html```
+
+Grafana:
 
 ```http://localhost:3000```
 
-#### Credenciais de acesso:
-```
-Usuário: admin
-Senha: admin
-```
-Após o primeiro Login, será requisitado a troca da senha padrão.
+## Aprendizados Técnicos
 
-Ao acessar o sistema, um Dashboard chamado Helios-Observability já estará disponivel automaticamente.
-### Métricas exibidas no Dashboard
+Durante a construção deste projeto aprofundei conhecimentos em:
 
-O dashboard apresenta algumas métricas principais da aplicação:
+- design orientado a domínio
+- arquitetura limpa
+- observabilidade
+- modelagem de incidentes
+- tratamento global de exceções
+- logging
+- testes unitários
+- desacoplamento entre domínio e framework
 
-- Status dos Serviços
-- Quantidade de serviços UP
-- Quantidade de serviços DOWN
-- Total de serviços monitorados
+## Próximos Passos
 
-#### Disponibilidade
+Evoluções planejadas:
 
-- Linha do tempo mostrando quando serviços ficaram UP ou DOWN
+- suporte a HTTP checks
+- suporte a TCP checks
+- retries configuráveis
+- SLA breach alerts
+- notificações por email/webhook
+- autenticação e autorização
+- histórico avançado de incidentes
 
-#### Métricas da Aplicação
-- Uso de memória da JVM
-- Volume de requisições HTTP da API
+### Sobre o Projeto
 
-Essas métricas são coletadas pelo Prometheus.
+Este projeto foi desenvolvido como parte da minha jornada de preparação para minha primeira oportunidade como desenvolvedor backend Java.
 
+O foco principal foi demonstrar:
+
+- capacidade de modelagem
+- tomada de decisões arquiteturais
+- preocupação com testabilidade
+- boas práticas de backend engineering
