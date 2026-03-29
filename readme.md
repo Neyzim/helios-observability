@@ -267,6 +267,36 @@ Grafana:
 
 ```http://localhost:3000```
 
+## Demo / Quick Start
+
+O projeto já inicializa com serviços de demonstração automaticamente configurados.
+
+Isso permite visualizar o comportamento do sistema imediatamente após subir a aplicação, sem necessidade de cadastro manual.
+
+### Serviços disponíveis
+
+- **Healthy Service**
+    - Endpoint: https://google.com
+    - Estado inicial: UP
+
+- **Offline Service**
+    - Endpoint: offline (simula falha)
+    - Estado inicial: UP (irá mudar para DOWN após os checks)
+
+### Como testar o comportamento
+
+Após subir a aplicação:
+
+- Acesse o Grafana: http://localhost:3000
+- Observe a transição de estados dos serviços
+- O serviço "Offline Service" irá falhar automaticamente
+
+Isso demonstra o funcionamento do sistema de:
+- Monitoramento
+- Detecção de falhas
+- Geração de alertas
+- Atualização de métricas
+
 ## Aprendizados Técnicos
 
 Durante a construção deste projeto aprofundei conhecimentos em:
