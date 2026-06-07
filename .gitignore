@@ -36,3 +36,4 @@ build/
 grafana_data/
 postgres_data/
 prometheus_data/
+kafka_data/
