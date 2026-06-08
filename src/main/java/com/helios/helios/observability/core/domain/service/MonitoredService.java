@@ -102,11 +102,6 @@ public class MonitoredService {
         return lastEvent;
     }
 
-    public List<Alert> Alerts() {
-        return alerts;
-    }
-
-
     public Incident Incident() {
         return incident;
     }
