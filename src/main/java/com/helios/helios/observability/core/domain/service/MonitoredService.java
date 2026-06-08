@@ -19,7 +19,6 @@ public class MonitoredService {
     private SLAServiceEnum sla;
     private Integer cont = 0;
     private StatusEnum lastEvent;
-    private List<Alert> alerts;
     private Incident incident;
 
 
@@ -31,7 +30,7 @@ public class MonitoredService {
         return service;
     }
 
-    public static MonitoredService rehydrate(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla, Integer count, StatusEnum lastEvent, List<Alert> alerts, Incident incident){
+    public static MonitoredService rehydrate(Long id, String name, String monitoredEndpoint, StatusEnum status, SLAServiceEnum sla, Integer count, StatusEnum lastEvent, Incident incident){
         MonitoredService service = new MonitoredService();
         service.id = id;
         service.name = name;
@@ -40,7 +39,6 @@ public class MonitoredService {
         service.sla = sla;
         service.cont = count != null ? count : 0;
         service.lastEvent = lastEvent;
-        service.alerts = alerts;
         service.incident = incident;
         return service;
     }

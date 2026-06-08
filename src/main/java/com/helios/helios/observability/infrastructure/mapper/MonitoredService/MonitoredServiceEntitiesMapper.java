@@ -26,7 +26,6 @@ public class MonitoredServiceEntitiesMapper {
                 infraEntity.getSla(),
                 infraEntity.getCont(),
                 infraEntity.getLastEvent(),
-                alertEntitiesMapper.listToCore(infraEntity.getAlerts()),
                 incidentEntitiesMapper.toCoreEntity(infraEntity.getIncident())
         );
     }

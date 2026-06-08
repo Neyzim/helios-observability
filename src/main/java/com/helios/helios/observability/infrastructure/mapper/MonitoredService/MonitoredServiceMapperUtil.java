@@ -20,7 +20,6 @@ public class MonitoredServiceMapperUtil {
                 infraEntity.getSla(),
                 infraEntity.getCont(),
                 infraEntity.getLastEvent(),
-                null,
                 null
         );
     }
