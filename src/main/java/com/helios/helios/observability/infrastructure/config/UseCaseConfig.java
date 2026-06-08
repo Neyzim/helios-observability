@@ -5,10 +5,7 @@ import com.helios.helios.observability.application.service.usecases.alert.Resolv
 import com.helios.helios.observability.application.service.usecases.incident.CreateIncident;
 import com.helios.helios.observability.application.service.usecases.incident.FinishIncident;
 import com.helios.helios.observability.application.service.usecases.monitoredservice.RegisterMonitoredService;
-import com.helios.helios.observability.application.service.usecases.orquestrator.CheckServiceHealth;
-import com.helios.helios.observability.application.service.usecases.orquestrator.HandleServiceDown;
-import com.helios.helios.observability.application.service.usecases.orquestrator.HandleServiceRecovery;
-import com.helios.helios.observability.application.service.usecases.orquestrator.ServiceHealthHandler;
+import com.helios.helios.observability.application.service.usecases.orquestrator.*;
 import com.helios.helios.observability.infrastructure.healthcheck.HealthCheckGatewayImpl;
 import com.helios.helios.observability.infrastructure.observability.adapter.PrometheusObservabilityGatewayImpl;
 import com.helios.helios.observability.infrastructure.persistency.implementations.AlertRepositoryImpl;
@@ -25,15 +22,17 @@ public class UseCaseConfig {
     private final PrometheusObservabilityGatewayImpl observabilityGateway;
     private final AlertRepositoryImpl alertRepository;
     private final IncidentRepositoryImpl incidentRepository;
+    private final ServiceEventPublisher serviceEventPublisher;
 
 
 
-    public UseCaseConfig(MonitoredServiceRepositoryImpl monitoredServiceRepositoryImpl, HealthCheckGatewayImpl healthCheckGateway, PrometheusObservabilityGatewayImpl observabilityGateway, AlertRepositoryImpl alertRepository, IncidentRepositoryImpl incidentRepository) {
+    public UseCaseConfig(MonitoredServiceRepositoryImpl monitoredServiceRepositoryImpl, HealthCheckGatewayImpl healthCheckGateway, PrometheusObservabilityGatewayImpl observabilityGateway, AlertRepositoryImpl alertRepository, IncidentRepositoryImpl incidentRepository, ServiceEventPublisher serviceEventPublisher) {
         this.monitoredServiceRepositoryImpl = monitoredServiceRepositoryImpl;
         this.healthCheckGateway = healthCheckGateway;
         this.observabilityGateway = observabilityGateway;
         this.alertRepository = alertRepository;
         this.incidentRepository = incidentRepository;
+        this.serviceEventPublisher = serviceEventPublisher;
     }
 
     @Bean
@@ -87,6 +86,6 @@ public class UseCaseConfig {
         return new ServiceHealthHandler(handleServiceDown,
                                         handleServiceRecovery,
                                         monitoredServiceRepositoryImpl,
-                                        observabilityGateway);
+                                        observabilityGateway, serviceEventPublisher);
     }
 }

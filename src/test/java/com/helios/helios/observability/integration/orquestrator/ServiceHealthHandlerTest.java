@@ -2,6 +2,7 @@ package com.helios.helios.observability.integration.orquestrator;
 
 import com.helios.helios.observability.application.service.usecases.orquestrator.HandleServiceDown;
 import com.helios.helios.observability.application.service.usecases.orquestrator.HandleServiceRecovery;
+import com.helios.helios.observability.application.service.usecases.orquestrator.ServiceEventPublisher;
 import com.helios.helios.observability.application.service.usecases.orquestrator.ServiceHealthHandler;
 import com.helios.helios.observability.core.domain.service.MonitoredService;
 import com.helios.helios.observability.core.domain.service.ServiceStateChange;
@@ -31,6 +32,13 @@ class ServiceHealthHandlerTest {
     @Mock
     private ObservabilityGateway observabilityGateway;
 
+    @Mock
+    private final ServiceEventPublisher serviceEventPublisher;
+
+    ServiceHealthHandlerTest(ServiceEventPublisher serviceEventPublisher) {
+        this.serviceEventPublisher = serviceEventPublisher;
+    }
+
     @Test
     void shouldCallRecoveryWhenServiceIsUpAndConfirmed() {
         // given
@@ -58,7 +66,7 @@ class ServiceHealthHandlerTest {
         ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown,
                                                                 handleServiceRecovery,
                                                                 monitoredServiceRepository,
-                                                                observabilityGateway
+                                                                observabilityGateway, serviceEventPublisher
                                                                 );
 
         handler.handle(service, true);
@@ -75,7 +83,7 @@ class ServiceHealthHandlerTest {
                 .thenReturn(ServiceStateChange.DOWN_CONFIRMED);
 
 
-        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery, monitoredServiceRepository, observabilityGateway);
+        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery, monitoredServiceRepository, observabilityGateway, serviceEventPublisher);
 
         handler.handle(service, false);
 
@@ -90,7 +98,7 @@ class ServiceHealthHandlerTest {
         when(service.changeStatusToDown())
                 .thenReturn(ServiceStateChange.UP_CONFIRMED);
 
-        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery, monitoredServiceRepository, observabilityGateway);
+        ServiceHealthHandler handler = new ServiceHealthHandler(handleServiceDown, handleServiceRecovery, monitoredServiceRepository, observabilityGateway, serviceEventPublisher);
 
         handler.handle(service, false);
 
