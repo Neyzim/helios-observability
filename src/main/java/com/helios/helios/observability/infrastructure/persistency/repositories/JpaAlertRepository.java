@@ -8,4 +8,8 @@ import java.util.List;
 public interface JpaAlertRepository extends JpaRepository<AlertEntity, Long> {
 
     List<AlertEntity> findByServiceIdAndSolvedAtIsNull(Long serviceId);
+
+    List<AlertEntity> findAllByServiceId(Long serviceId);
+
+    List<AlertEntity> findAllByIncidentId(Long incidentId);
 }

@@ -58,17 +58,16 @@ public class AlertRepositoryImpl implements AlertRepository {
     @Override
     public List<Alert> findAlertsByIncidentId(Long id) {
         Incident incident = incidentRepository.findById(id).orElseThrow();
-        List<Alert> alerts = incident.service().Alerts();
-        return alerts;
+        List<AlertEntity> alerts = alertRepository.findAllByIncidentId(incident.id());
+        return entitiesMapper.listToCore(alerts);
     }
 
     @Override
     public List<Alert> findAlertsByServiceId(Long id) {
         MonitoredService service = monitoredServiceRepository.findServiceById(id)
                 .orElseThrow();
-        List<Alert> alerts = service.Alerts();
-
-        return alerts;
+        List<AlertEntity> alerts = alertRepository.findAllByServiceId(service.Id());
+        return entitiesMapper.listToCore(alerts);
     }
 
     @Override

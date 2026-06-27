@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MonitoredServiceEntitiesMapper {
 
-    private final AlertEntitiesMapper alertEntitiesMapper;
     private final IncidentEntitiesMapper incidentEntitiesMapper;
 
-    public MonitoredServiceEntitiesMapper(AlertEntitiesMapper alertEntitiesMapper, IncidentEntitiesMapper incidentEntitiesMapper) {
-        this.alertEntitiesMapper = alertEntitiesMapper;
+    public MonitoredServiceEntitiesMapper(IncidentEntitiesMapper incidentEntitiesMapper) {
         this.incidentEntitiesMapper = incidentEntitiesMapper;
     }
 
@@ -39,7 +37,6 @@ public class MonitoredServiceEntitiesMapper {
         monitoredServiceEntity.setSla(coreService.Sla());
         monitoredServiceEntity.setCont(coreService.Cont());
         monitoredServiceEntity.setLastEvent(coreService.LastEvent());
-        monitoredServiceEntity.setAlerts(alertEntitiesMapper.listToInfra(coreService.Alerts()));
         monitoredServiceEntity.setIncident(incidentEntitiesMapper.toInfraEntity(coreService.Incident()));
 
         return monitoredServiceEntity;
