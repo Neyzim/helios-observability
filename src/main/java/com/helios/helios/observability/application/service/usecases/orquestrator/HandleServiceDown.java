@@ -29,6 +29,7 @@ public class HandleServiceDown {
             Alert alert = createAlert.createAlert(service, AlertType.DOWN);
             IncidentSeverity severity = IncidentSeverity.from(service.Sla());
             Incident incident = createIncident.createIncident(service, alert, severity);
+            service.openIncident(incident);
             List<Alert> alerts = alertRepository.findOpenAlertsByServiceId(service.Id());
 
             for(Alert a : alerts){

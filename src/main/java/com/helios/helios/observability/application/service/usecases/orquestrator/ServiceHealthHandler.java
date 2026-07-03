@@ -34,7 +34,7 @@ public class ServiceHealthHandler {
                 handleServiceRecovery.resolve(service);
                 observabilityGateway.recordServiceUp(service.Name());
                 serviceEventPublisher.PublishRecovered(
-                        new ServiceOnlineEvent(service.Id(), service.Name(),LocalDateTime.now()));
+                        new ServiceOnlineEvent(service.Id(), service.Name(), service.Incident().startedAt(), service.Status()));
             }
         }else{
             change = service.changeStatusToDown();
@@ -42,7 +42,7 @@ public class ServiceHealthHandler {
                 handleServiceDown.serviceIsDown(service);
                 observabilityGateway.recordServiceDown(service.Name());
                 serviceEventPublisher.PublishOffline(
-                        new ServiceOfflineEvent(service.Id(), service.Name(), LocalDateTime.now())
+                        new ServiceOfflineEvent(service.Id(), service.Name(), service.Incident().startedAt(), service.Status())
                 );
             }
         }
