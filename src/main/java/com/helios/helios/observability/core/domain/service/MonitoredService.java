@@ -64,7 +64,7 @@ public class MonitoredService {
 
     public ServiceStateChange changeStatusToUp(){
 
-        if (lastEvent == StatusEnum.UP) {
+        if (lastEvent == StatusEnum.UP || lastEvent == null) {
             return ServiceStateChange.NO_CHANGE;
         }
         this.status = StatusEnum.UP;
@@ -72,6 +72,20 @@ public class MonitoredService {
         this.lastEvent = StatusEnum.UP;
 
         return ServiceStateChange.UP_CONFIRMED;
+    }
+
+    public void openIncident(Incident incident){
+        if(this.status != StatusEnum.DOWN){
+            throw new IllegalStateException("Só é possível associar um incident quando o serviço está DOWN.");
+        }
+        if(this.incident != null && this.incident.finishedAt() == null){
+            throw new IllegalStateException("Serviço já possui um incident em aberto.");
+        }
+        this.incident = incident;
+    }
+
+    public void attachIncident(Incident incident){
+        this.incident = incident;
     }
 
     public Long Id() {
